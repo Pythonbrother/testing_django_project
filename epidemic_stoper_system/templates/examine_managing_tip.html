@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Examine Managing Tip</title>
+</head>
+<body>
+    <h1>{{epidemic.name}}</h1>
+    <h2>{{total_tip}} managing tips</h2>
+
+    <p>
+        <form method="post" >{% csrf_token %}
+            {%for tip in tips%}
+                <input type="checkbox" value="{{tip}}" name="managing_tips">{{tip}}<br>
+            {%endfor%}
+            <button type="submit">Submit</button>
+        </form>
+
+    </p>
+</body>
+</html>
