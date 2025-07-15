@@ -1,0 +1,150 @@
+{% load static tailwind_tags%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article Detail</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#8cd98c] font-mono h-auto">
+    <div class="flex justify-start">
+        <h1 class="text-[#0A400C] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+            {% if request.user.is_authenticated %}
+                <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+            {% else %}
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+            {% endif %}
+        </div>
+    </div>
+    <hr class="border-1 border-black mt-[5px] mb-[10px]">
+    <div class="w-full text-center"><h1 class="text-[25px] pb-[10px]">{{article_record.name}}</h1></div>
+    <div class="w-[80%] mx-auto  flex justify-evenly">
+        <div class="w-[30%]"><img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px]">
+            {% if request.user.is_authenticated%}
+                <form>{%csrf_token%}<input type="text" id="comment_input_box" placeholder="write comment" class="w-[200px] rounded-[20px]" ><button id="sent_comment_btn" onclick='sent_comment(event)'>&nbsp;Sent</button></form></div>
+            {% else %}
+                <a href="{% url 'login' %}"><input type="text" id="comment_input_box" placeholder="write comment" class="w-[200px] rounded-[20px]" ><button>&nbsp;Sent</button></a></div>
+            {% endif %}
+        <div class="w-[70%]"><p class="text-justify px-[20px] mb-[30px]">{{article_record.topic|safe}}</p>
+            <div class="w-auto  h-[100px] mx-[20px] py-[10px]">
+                <button id="comment_btn"  type='button' onclick="show_comment()" class="rounded-[5px] border-2 border-black p-[5px] mr-[50px]">Show Comments</button>
+                {% if request.user.is_authenticated and request.user == article_record.creator %}
+                    <a href="{% url 'update_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">update post</button></a>
+                    <a href="{% url 'delete_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">delete post</button></a>
+                {% endif %}
+                <form method='post'>{%csrf_token%}<p id="comments" class="my-[10px] hidden"></p></form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let comments_data = JSON.parse("{{comment_data|safe|escapejs}}")
+    function show_comment(){
+        if (document.getElementById("comment_btn").textContent == "Show Comments"){
+            document.getElementById("comments").style.display = 'block';
+            document.getElementById("comment_btn").textContent = "Off Comments";
+            document.getElementById("comments").textContent = '';
+            for (let comment of comments_data){
+
+                let each_comment = document.createElement('div');
+                each_comment.id = `${comment.comment_pk}_each_comment`;
+
+                let additional_box = document.createElement('div');
+                additional_box.id = `${comment.comment_pk}_additional_box`;
+                for (let replies_text of comment.replies){
+                    let replie = document.createElement('p')
+                    replie.innerHTML=`${replies_text.comment}<span style="color: #b3e6b3;"> (${replies_text.commenter})</span>`
+                    additional_box.append(replie);
+                    additional_box.append(document.createElement('br'));
+                }
+                additional_box.style.display = 'none';
+                additional_box.className = "mx-[150px]"
+
+                let cmt_text = document.createElement('p');
+                cmt_text.id = `${comment.comment_pk}_cmt_text`;
+                cmt_text.innerHTML = `<br> ${comment.comment} <span style="color: #b3e6b3;">( ${comment.commenter}&nbsp;&nbsp;&nbsp;&nbsp;${comment.upload_at} )</span>`
+
+                let answer_box = document.createElement('input');
+                answer_box.id = `${comment.comment_pk}_answer_box`;
+                answer_box.placeholder = "write replies";
+                answer_box.className = "rounded-[20px] h-[40px] w-[200px]";
+
+                let answer_submit = document.createElement('button');
+                answer_submit.type = 'submit';
+                answer_submit.id = `${comment.comment_pk}_answer_submit`;
+                answer_submit.textContent = "submit";
+                answer_submit.onclick = () => {
+                    event.preventDefault();
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    let replies_comment = answer_box.value;
+                    let to_comment_pk = comment.comment_pk;
+                    if (replies_comment){
+                        fetch('{% url 'article_detail' article_record.pk %}',{
+                            method:'POST',
+                            headers:{
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrfToken},
+                            body:`replies_comment=${encodeURIComponent(replies_comment)}&to_comment_pk=${to_comment_pk}`
+                        }).then(response => response.json()).then(data => {comments_data = data.comment_data;
+                    })
+                    answer_box.value = '';
+                    }
+                }
+
+                let replies = document.createElement('button');
+                replies.type = 'button';
+                replies.id = `${comment.comment_pk}_replies`;
+                replies.textContent = `${comment.replies.length} replies`;
+                replies.onclick = () => {additional_box.style.display='block'}
+                replies.className = "ml-[150px] my-[10px] text-blue-500 border-[1px] border-black rounded-[10px]";
+
+                let control_additional_Box = document.createElement('button');
+                control_additional_Box.type = 'button';
+                control_additional_Box.textContent = "close the box";
+                control_additional_Box.id = `${comment.comment_pk}_control_additional_Box`;
+                control_additional_Box.onclick = () => {additional_box.style.display='none'};
+                control_additional_Box.className = "mx-[10px] my-[10px] text-red-500 border-[1px] border-black rounded-[5px]";
+                additional_box.append(answer_box);
+                additional_box.append(answer_submit);
+
+                each_comment.append(cmt_text)
+                each_comment.append(replies)
+                each_comment.append(control_additional_Box)
+                each_comment.append(additional_box)
+
+                document.getElementById("comments").append(each_comment);
+                document.getElementById("comments").append(document.createElement('hr'));
+            }
+    }
+        else{
+            document.getElementById("comments").style.display = 'none';
+            document.getElementById("comment_btn").textContent = "Show Comments";
+    }
+    }
+    function sent_comment(event){
+        event.preventDefault();
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let comment = document.getElementById('comment_input_box').value;
+        if (comment){
+            fetch('{% url 'article_detail' article_record.pk %}',{
+        method:'POST',
+        headers:{
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken},
+            body:`comment=${encodeURIComponent(comment)}`
+            }).then(response => response.json()).then(data => {comments_data = data.comment_data;
+        })
+        document.getElementById('comment_input_box').value = '';
+        }
+
+    }
+</script>
+
+</body>
+</html>

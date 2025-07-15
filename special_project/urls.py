@@ -20,8 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path("", include("epidemic_stoper_system.urls")),
+    path('account/',include('django.contrib.auth.urls')),
+    path('account/', include('account_system.urls')),
     path("admin/", admin.site.urls),
     path('epidemic/',include('epidemic_stoper_system.urls')),
     path('article/',include('article_system.urls')),
+    path("__reload__/", include("django_browser_reload.urls")),
+    path("ai_diagnosis/", include("ai_diagnosis_app.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

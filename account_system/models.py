@@ -2,10 +2,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 
 class User_Manager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, password):
+    def create_user(self, username, email, password):
         user = self.model(
-            first_name=first_name,
-            last_name=last_name,
             username=username,
             email=self.normalize_email(email)
         )
@@ -13,10 +11,8 @@ class User_Manager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, username, email, password):
+    def create_superuser(self, username, email, password):
         user = self.create_user(
-            first_name=first_name,
-            last_name=last_name,
             username=username,
             email=self.normalize_email(email),
             password=password)
@@ -25,14 +21,14 @@ class User_Manager(BaseUserManager):
         user.is_admin = True
         user.country = "Myanmar"
         user.gender = "Male"
-        user.DOB = "2000-03-30"
+        user.DOB = "2003-03-30"
         user.save(using=self._db)
         return user
 
 class User_Account(AbstractUser):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    username = models.CharField(max_length=30)
+    #first_name = models.CharField(max_length=30)
+    #last_name = models.CharField(max_length=30)
+    username = models.CharField(max_length=30,unique=True)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -44,7 +40,7 @@ class User_Account(AbstractUser):
     objects = User_Manager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username

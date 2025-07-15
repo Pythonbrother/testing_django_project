@@ -1,18 +1,31 @@
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Home Page</title>
+    {% tailwind_css %}
+    
 </head>
-<body>
-    <h1>Fondation Merix</h1>
-    <ol>
-        <li><p><a href="{% url 'epidemic_insertion' %}">epidemic_insertion</a> = create epidemic records </p></li>
-        <li><p><a href="{% url 'examine_prevention_tip' %}">examine_prevention_tip</a> = examine prevention tip </p></li>
-        <li><p><a href="{% url 'examine_managing_tip' %}">examine_managing_tip</a> = examine managing tip </p></li>
-        <hr>
-        <li><p><a href="{% url 'create_article' %}">create_article</a> = create article records </p></li>
-    </ol>
+<body class="bg-black text-white">
+  <div class="flex justify-start">
+      <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+      <div class="flex justify-evenly w-[70%] h-auto text-stone-400">
+          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'diagnosis' %} >Diagnosis Test</a></div>
+          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'epidemic_intro' %}>Manage Chronic Disease</a></div>
+          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'article_intro' %} >Contribute topic</a></div>
+          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'signup' %}>Signup</a></div>
+          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+          <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+      </div>
+  </div>
+  <div class="font-mono mt-[50px] w-[90%] h-auto pr-[10px] pl-[50px]">
+      <p class="text-[40px] font-extralight tracking-tighter">Give your disease symptoms and examine which disease it is. Read about that disease and take the ways to cure.</p>
+      <p class="text-[25px] text-stone-400 ">In this system, you can find and follow the guides, how to avoid chronic disease and stay healthy and  how to stay strongly for chronical users. Our AI can help you for those.</p>
+      <a href={% url 'diagnosis' %}><button class="my-[20px] w-[300px] h-[50px] rounded-[10px] border-2 border-white bg-gradient-to-b from-[#5900b3] to-[#0059b3]">Diagnosis Test</button></a>
+      <a href={% url 'epidemic_intro' %}><button class="my-[20px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white">Manage Chronic</button></a>
+      <a href={% url 'article_intro' %}><button class="my-[20px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white">Articles</button></a>
+  </div>
 
 </body>
 </html>

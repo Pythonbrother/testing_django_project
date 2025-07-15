@@ -1,21 +1,33 @@
+{% load static tailwind_tags%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Examine Prevention Tips</title>
+    {% tailwind_css %}
 </head>
-<body>
-    <h1>{{epidemic.name}}</h1>
-    <h2>{{total_tip}} prevention tips</h2>
+<body class="bg-[#8cd98c] font-mono font-extrabold ">
 
-    <p>
+    <div class="bg-[#8cd98c] rounded-xl shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] inline-block text-[30px] m-[5px]">🛡️</div><h1 class="inline-block my-[10px] ml-[10px] underline font-serif">{{epidemic.name}} : {{total_tip}} prevention tips</h1>
+    <div class="bg-[#8cd98c] place-items-center">
+    <div>
         <form method="post" >{% csrf_token %}
-            {%for tip in tips%}
-                <input type="checkbox" value="{{tip}}" name="prevention_tips">{{tip}}<br>
+            {%for tip in food_avoid_list%}
+                <input type="checkbox" value="{{tip}}" name="food_avoid" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><label class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</label><br>
             {%endfor%}
-            <button type="submit">Submit</button>
+            {%for tip in food_take_list%}
+                <input type="checkbox" value="{{tip}}" name="food_take" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><label class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</label><br>
+            {%endfor%}
+            {%for tip in lifestyle_avoid_list%}
+                <input type="checkbox" value="{{tip}}" name="lifestyle_avoid" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><label class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</label><br>
+            {%endfor%}
+            {%for tip in lifestyle_take_list%}
+                <input type="checkbox" value="{{tip}}" name="lifestyle_take" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><label class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</label><br>
+            {%endfor%}
+            <button type="submit" class="my-[20px] ml-[60px] bg-[#8cd98c] rounded-xl w-[100px] h-[50px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">Submit</button>
         </form>
 
-    </p>
+    </div>
+    </div>
 </body>
 </html>

@@ -1,21 +1,26 @@
+{% load static tailwind_tags%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Examine Managing Tip</title>
+    {% tailwind_css %}
 </head>
-<body>
-    <h1>{{epidemic.name}}</h1>
-    <h2>{{total_tip}} managing tips</h2>
+<body class="bg-[#8cd98c] font-mono font-extrabold">
+<div class="bg-[#8cd98c] rounded-xl shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] text-[25px] inline-block  m-[5px]">🍎</div><h1 class="inline-block my-[10px] ml-[20px] underline font-serif">{{epidemic.name}} : {{total_tip}}  managing tips</h1>
 
-    <p>
-        <form method="post" >{% csrf_token %}
-            {%for tip in tips%}
-                <input type="checkbox" value="{{tip}}" name="managing_tips">{{tip}}<br>
-            {%endfor%}
-            <button type="submit">Submit</button>
-        </form>
+<div class="bg-[#8cd98c] place-items-center">
 
-    </p>
+        
+        <div>
+            <form method="post" >{% csrf_token %}
+                {%for tip in tips%}
+                    <input type="checkbox" value="{{tip}}" name="managing_tips" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><p class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</p><br>
+                {%endfor%}
+                <button type="submit" class="my-[20px] ml-[60px] bg-[#8cd98c] rounded-xl w-[100px] h-[50px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">Submit</button>
+            </form>
+    
+        </div>
+</div>
 </body>
 </html>

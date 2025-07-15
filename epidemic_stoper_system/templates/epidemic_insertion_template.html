@@ -1,13 +1,88 @@
+{% load static tailwind_tags%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Epidemic Insertion Form Page</title>
+    {% tailwind_css %}
 </head>
-<body>
-<h1>Epidemic Insertion Form</h1>
-<form method="post" action="{% url 'epidemic_insertion' %}">{% csrf_token %}
-    {{ form.as_p }}
+<body class='font-mono'>
+<h1 class="bg-green-600">Epidemic Insertion Form</h1>
+<form method="post" action="{% url 'epidemic_insertion' %}"  class="text-center">{% csrf_token %}
+    <div id='top-part-form' class='my-[20px]'>
+        <label for='name'>Name:</label><br>
+        <input type='text' class='rounded-[5px] w-[400px]' id='name' name='name'><br>
+        <label for='topic'>topic:</label><br>
+        <textarea class='rounded-[5px] w-[800px] h-[200px]' id='topic' name='topic'></textarea><br>
+        <label for='symptoms'>Symptoms:</label><button type='button' onclick='symptoms_btn()' class="text-[30px] pl-[10px]">+</button><br>
+        <input type='text' class='rounded-[5px]' id='symptoms' name='symptoms'><br>
+    </div>
+    <div class="grid grid-cols-2 gap-[20px]">
+        <div id='food-avoid-div'>
+            <label for='food-avoid'>Food Avoid:</label><button type='button' onclick='food_avoid_btn()' class="text-[30px] pl-[10px]">+</button><br>
+            <input type='text' id='food-avoid' name = 'food-avoid' class='rounded-[5px]'><br>
+        </div>
+        <div id='lifestyle-avoid-div'>
+            <label for='lifestyle-avoid'>Lifestyle Avoid:</label><button type='button' onclick='lifestyle_avoid_btn()' class="text-[30px] pl-[10px]">+</button><br>
+            <input type='text' id='lifestyle-avoid' name='lifestyle-avoid' class='rounded-[5px]'><br>
+        </div>
+        <div id='food-take-div'>
+            <label for='food-take'>Food Take:</label><button type='button' onclick='food_take_btn()' class="text-[30px] pl-[10px]">+</button><br>
+            <input type='text' id='food-take' name='food-take' class='rounded-[5px]'><br>
+        </div>
+        <div id='lifestyle-take-div'>
+            <label for='lifestyle-take'>Lifestyle Take:</label><button type='button' onclick='lifestyle_take_btn()' class="text-[30px] pl-[10px]">+</button><br>
+            <input type='text' id='lifestyle-take' name='lifestyle-take' class='rounded-[5px]'><br>
+        </div>
+    </div>
+    <div id='managing-div' class='my-[20px]'>
+        <label for='managing-tips'>Managing Tips:</label><button type='button' onclick='managing_tips_btn()' class="text-[30px] pl-[10px]">+</button><br>
+        <input type='text' id='managing-tips' name='managing-tips' class='rounded-[5px]'><br>
+    </div>
     <button type="submit">Submit</button> </form>
+    <script>
+        function symptoms_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'symptoms';
+            new_input.name = 'symptoms';
+            document.getElementById('top-part-form').append(new_input);
+        }
+        function food_avoid_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'food-avoid';
+            new_input.name = 'food-avoid';
+            document.getElementById('food-avoid-div').append(new_input);
+        }
+        function food_take_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'food-take';
+            new_input.name = 'food-take';
+            document.getElementById('food-take-div').append(new_input);
+        }
+        function lifestyle_avoid_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'lifestyle-avoid';
+            new_input.name = 'lifestyle-avoid';
+            document.getElementById('lifestyle-avoid-div').append(new_input);
+        }
+        function lifestyle_take_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'lifestyle-take';
+            new_input.name = 'lifestyle-take';
+            document.getElementById('lifestyle-take-div').append(new_input);
+        }
+        function managing_tips_btn(){
+            let new_input = document.createElement('input');
+            new_input.type = 'text';
+            new_input.id = 'managing-tips';
+            new_input.name = 'managing-tips';
+            document.getElementById('managing-div').append(new_input);
+        }
+    </script>
 </body>
 </html>

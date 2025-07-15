@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Article</title>
+</head>
+<body>
+{% if request.user.is_authenticated and request.user == object.creator %}
+    <form method="post">{% csrf_token %}
+        <p>Are you sure to delete " {{object.name}} "</p>
+        <button type="submit">Delete</button>
+    </form>
+{% else%}
+<h1>You are NOT RIGHT PERSON!</h1>
+{% endif %}
+</body>
+</html>

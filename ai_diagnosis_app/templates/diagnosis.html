@@ -1,0 +1,123 @@
+{% load static tailwind_tags%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+    {% tailwind_css %}
+</head>
+<body>
+<div class="flex justify-evenly bg-[#141f1f] w-full h-screen overflow-auto">
+    <div class="bg-[#141f1f] w-[35%] h-[100%] py-[10px] px-[5px]">
+        <form onsubmit="event.preventDefault(); send_symptoms();" method="post">{% csrf_token %}
+            <input type="text" id="symptom_box" list='symptoms_list' class="w-[89%] h-[50px] text-[20px] font-mono font-extrabold rounded-[5px]">
+            <datalist id='symptoms_list'>
+                {% for symptom in symptoms_list%}
+                <option value="{{symptom}}">{{symptom}}</option>
+                {% endfor %}
+            </datalist>
+            <button type="submit" class="w-[10%] h-[50px] bg-white rounded-[5px] text-[20px] font-mono font-extrabold">GO</button>    
+
+        <form>
+        <div class=" bg-[#141f1f] my-[20px] rounded-[5px] text-white font-mono ">
+            <div class="flex justify-center w-[100%] h-[100%]">
+                <button id="note-btn" type='reset' onclick='add()' class=" bg-[#141f1f] rounded-[5px] text-green-400  border-2 p-[5px] ">ADD NOTE</button>
+                <button id="note-btn" type='button' onclick='edit()' class=" bg-[#141f1f] rounded-[5px] text-yellow-400 border-2 p-[5px] ml-[10px]">EDIT NOTE</button>
+
+            </div>
+            <div class="p-[10px] w-[100%] h-[100%] text-center"> 
+                <h3 id="note_header">NOTE:</h3>
+                <p id="note" class="text-green-400 border-2 text-left rounded-[5px]" ></p>
+            </div>
+            <div class="p-[10px] w-[100%] h-[100%] text-center"> 
+                <h3 id="about_disease_header" class="hidden">Disease Name:</h3>
+                <p id="about_disease" class="text-green-400 border-2 text-left hidden rounded-[5px]" ></p>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gradient-to-l from-white to-[#8cd98c] w-[65%] h-[100%] rounded-l-[120px] font-mono">
+        <div class="place-items-center">
+            <p class="text-blue-800 my-[20px] px-[30px] text-[30px] rounded-[5px] ">
+               3 Expert Artificial Doctors Say:
+            </p>
+        </div>
+        <div class="place-items-center">
+            <p id='you_have' class=" w-[90%] my-[10px] px-[30px] text-[15px]  rounded-[5px] text-black font-extrabold">
+               
+            </p>
+        </div>
+        <div class="flex justify-evenly">
+            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
+                <img src="{% static 'images/doctor1.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
+                <p class="text-[black] text-[15px]">Doctor1's Result:</p>
+                <p id="doctor1_result" class="text-black"></p>
+            </div>
+            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
+                <img src="{% static 'images/doctor2.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
+                <p class="text-black text-[15px]">Doctor2's Result:</p>
+                <p id="doctor2_result" class="text-black"></p>
+            </div>
+            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
+                <img src="{% static 'images/doctor3.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
+                <p class="text-black text-[15px]">Doctor3's Result:</p>
+                <p id="doctor3_result" class="text-black"></p>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function add(){
+            symptoms = document.getElementById('symptom_box').value;
+            document.getElementById('about_disease').style.display = 'none';
+            document.getElementById('about_disease_header').style.display = 'none';
+            if (symptoms != ''){
+                if (symptoms[symptoms.length - 1]!= ','){
+                    document.getElementById('note_header').style.display = 'block';
+                    document.getElementById('note').style.display = 'block';
+                    document.getElementById('note').textContent += `${symptoms},`;
+                }else{
+                    document.getElementById('note_header').style.display = 'block'
+                    document.getElementById('note').style.display = 'block'
+                    document.getElementById('note').textContent += `${symptoms}`
+                }
+            };
+            document.getElementById('symptom_box').value = ''
+        };
+        function edit(){
+            if(document.getElementById('note').textContent != ''){
+                document.getElementById('note_header').style.display = 'block'
+                document.getElementById('note').style.display = 'block'
+                document.getElementById('symptom_box').value = document.getElementById('note').textContent;
+                document.getElementById('note').textContent = '';
+            }
+            
+        }
+        function send_symptoms(){
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            add();
+            let note = document.getElementById('note').textContent;
+            let slice_num = note.length - 1;
+            note = note.slice(0,slice_num);
+            fetch('/ai_diagnosis/',{
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken},
+                body:`symptoms=${encodeURIComponent(note)}`
+                }).then(response => response.json()).then(data => {document.getElementById('about_disease').textContent = data.result;
+                document.getElementById('you_have').textContent = `You have these Symptoms: ${data.response_symptoms}`;
+                document.getElementById('doctor1_result').textContent = `${data.result}`
+                });
+            document.getElementById('symptom_box').value = '';
+            document.getElementById('note').textContent = '';
+            document.getElementById('note_header').style.display = 'none';
+            document.getElementById('note').style.display = 'none';
+            document.getElementById('about_disease_header').style.display = 'block';
+            document.getElementById('about_disease').style.display = 'block';
+            };
+    </script>
+    
+    <!--
+    -->
+</body>
+</html>
