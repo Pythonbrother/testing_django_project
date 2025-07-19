@@ -66,6 +66,7 @@
 
     </div>
     <script>
+        let all_results = "";
         function add(){
             symptoms = document.getElementById('symptom_box').value;
             document.getElementById('about_disease').style.display = 'none';
@@ -104,9 +105,12 @@
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': csrfToken},
                 body:`symptoms=${encodeURIComponent(note)}`
-                }).then(response => response.json()).then(data => {document.getElementById('about_disease').textContent = data.result;
-                document.getElementById('you_have').textContent = `You have these Symptoms: ${data.response_symptoms}`;
-                document.getElementById('doctor1_result').textContent = `${data.result}`
+                }).then(response => response.json()).then(data => {
+                    all_results=data.all_results;
+                    document.getElementById('about_disease').innerHTML = all_results.topic1;
+                    document.getElementById('you_have').textContent = `You have these Symptoms: ${data.response_symptoms}`;
+                    document.getElementById('doctor2_result').textContent = `${data.all_results.result1}`;
+                    
                 });
             document.getElementById('symptom_box').value = '';
             document.getElementById('note').textContent = '';

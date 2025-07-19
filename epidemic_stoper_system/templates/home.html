@@ -9,16 +9,25 @@
 </head>
 <body class="bg-black text-white">
   <div class="flex justify-start">
-      <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
-      <div class="flex justify-evenly w-[70%] h-auto text-stone-400">
-          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'diagnosis' %} >Diagnosis Test</a></div>
-          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'epidemic_intro' %}>Manage Chronic Disease</a></div>
-          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'article_intro' %} >Contribute topic</a></div>
-          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href={% url 'signup' %}>Signup</a></div>
-          <div><a class="pb-[10px] border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
-          <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
-      </div>
-  </div>
+        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_admin %}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                {% else%}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                {% endif %}
+
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+            {% else %}
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+            {% endif %}
+        </div>
+    </div>
   <div class="font-mono mt-[50px] w-[90%] h-auto pr-[10px] pl-[50px]">
       <p class="text-[40px] font-extralight tracking-tighter">Give your disease symptoms and examine which disease it is. Read about that disease and take the ways to cure.</p>
       <p class="text-[25px] text-stone-400 ">In this system, you can find and follow the guides, how to avoid chronic disease and stay healthy and  how to stay strongly for chronical users. Our AI can help you for those.</p>

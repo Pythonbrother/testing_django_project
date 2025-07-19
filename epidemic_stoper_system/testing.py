@@ -1,4 +1,5 @@
-from math import ceil,floor,fabs
-tem = 6.5
-print(round(tem))
-    
+my_str = ""
+my_arr = ['1','2']
+my_arr.remove('1')
+print(my_arr)
+

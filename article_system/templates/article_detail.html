@@ -14,7 +14,12 @@
             <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
             <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
             {% if request.user.is_authenticated %}
-                <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                {% if request.user.is_admin %}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                {% else%}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                {% endif %}
+
                 <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
             {% else %}
                 <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
@@ -23,9 +28,12 @@
         </div>
     </div>
     <hr class="border-1 border-black mt-[5px] mb-[10px]">
-    <div class="w-full text-center"><h1 class="text-[25px] pb-[10px]">{{article_record.name}}</h1></div>
+    <div class="w-full text-center"><h1 class="text-[25px] pb-[10px]">{{article_record.caption}}</h1></div>
     <div class="w-[80%] mx-auto  flex justify-evenly">
-        <div class="w-[30%]"><img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px]">
+        <div class="w-[30%]">
+            {% if article_record.photo%}
+                <img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px]">
+            {% endif %}
             {% if request.user.is_authenticated%}
                 <form>{%csrf_token%}<input type="text" id="comment_input_box" placeholder="write comment" class="w-[200px] rounded-[20px]" ><button id="sent_comment_btn" onclick='sent_comment(event)'>&nbsp;Sent</button></form></div>
             {% else %}

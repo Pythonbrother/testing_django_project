@@ -110,7 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+#LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "my"
 
 TIME_ZONE = "Asia/Yangon"
 
@@ -139,3 +140,6 @@ AUTH_USER_MODEL = 'account_system.User_Account'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SESSION_COOKIE_AGE = 3800
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

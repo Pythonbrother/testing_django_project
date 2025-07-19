@@ -7,7 +7,26 @@
     {% tailwind_css %}
 </head>
 <body class="bg-[url('/static/images/leaf.jpg')] bg-cover bg-center bg-no-repeat">
+    <div class="flex justify-start">
+        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-white text-[15px] pt-[5px]">
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_admin %}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                {% else%}
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                {% endif %}
 
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+            {% else %}
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+            {% endif %}
+        </div>
+    </div>
     <div class="flex justify-around my-[10px] ">
         <h1 class="w-[30%] text-center text-[#ffeb99]   font-mono font-extrabold text-[30px]">Health Article <a href="{% url 'create_article' %}">📝</a></h1>
         <div class="w-[60%] h-[40px] "></div>
@@ -20,7 +39,11 @@
                 <button class="h-[40px] bg-white rounded-[30px]" type="submit">🔍</button>
             </form>
             <div class="text-white font-mono font-extralight p-[10px]">
-                <p >Always listen to your body and remember that you are not your illness. Your mind is a powerful tool that can help you navigate the ups and downs of living with a chronic condition. Embrace hope and positivity, and take one step at a time on your journey to well-being. Being active and getting regular exercise makes a huge difference, along with getting on the right combination of medications and taking them on a schedule. Regular exercise is important for people with AS, and I think that working out six days a week has helped me cope.</p>
+                <p class="text-justify">စာဖတ်ခြင်းနှင့် ကျန်းမာရေးနှင့်ပတ်သက်သော ဆောင်းပါးများကို ရေးသားခြင်းသည် စိတ်ရောကိုယ်ပါ ကျန်းမာစေရုံသာမက အသိပညာ၊ စိတ်ခံစားမှုနှင့် လူမှုဆက်ဆံရေးကိုပါ တိုးတက်စေပါသည်။ စာဖတ်ခြင်းနှင့် ကျန်းမာရေးဆိုင်ရာ ရေးသားခြင်းသည် မိမိကိုယ်ကိုယ် ဖွံ့ဖြိုးစေရုံသာမက အခြားသူများကိုပါ အကျိုးပြုနိုင်သော အလေ့အကျင့်ကောင်းတစ်ခုဖြစ်သည်။ ထို့ကြောင့် နေ့စဉ်အချိန်အနည်းငယ်ပေးကာ ကျန်းမာရေးဗဟုသုတများ ဖတ်ရှုခြင်း၊ မျှဝေခြင်းဖြင့် ပိုမိုကောင်းမွန်သော ဘဝနေထိုင်မှုကို တည်ဆောက်နိုင်ပါသည်။  ဤကဲ့သို့ အလေ့အကျင့်များ၏ အဓိက အကျိုးကျေးဇူးများမှာ –  
+
+                    <br>၁။ ကျန်းမာရေးအသိပညာ တိုးပွားစေခြင်း<br>၂။ စိတ်ဖိစီးမှုလျော့ကျစေခြင်း<br>၃။ အာရုံစူးစိုက်မှုနှင့် မှတ်ဉာဏ်တိုးတက်စေခြင်း<br>၄။ ဆုံးဖြတ်ချက်များ ပိုမိုကောင်းမွန်စေခြင်း<br>၅။ လူမှုဆက်ဆံရေး တိုးတက်စေခြင်း<br>၆။ ကိုယ်ရေးကိုယ်တာ ကျန်းမာရေး စောင့်ရှောက်မှု တိုးတက်စေခြင်း<br>၇။ စာနာစိတ်နှင့် အတွေးအမြင်ကျယ်ပြန့်စေခြင်း<br>
+                    
+                    <br><b>ဖတ်ပါ၊ ရေးပါ၊ ကျန်းမာပါ!</b>🌟</p>
             </div>
 
         </div>

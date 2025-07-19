@@ -1,0 +1,25 @@
+{% load static tailwind_tags%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-[#b3cccc]"><span class="bg-[#ff4d4d]"></span><span class="bg-[#80ffbf]"></span><span class="bg-[#ffff99]"></span>
+    <div class="w-[600px] h-auto bg-[{{color}}] rounded-[20px] mx-auto my-[30px] px-[10px] py-[20px] ">
+        <p class="text-[30px]  text-justify">{{message_to_user}}</p>
+        <hr class="border-[1px] border-white my-[10px]">
+        {%if all_you_followed%}
+            <span class="text-[20px]  text-justify">you followed:<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_followed %}<li>{{tip}}</li>{% endfor %}</ul>
+        <hr class="border-[1px] border-white my-[10px]">
+        {%endif%}
+        {% if all_you_dont_followed %}
+            <span class="text-[20px]  text-justify">you unfollowed:<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_dont_followed %}<li>{{tip}}</li>{% endfor %}</ul>
+        <hr class="border-[1px] border-white my-[10px]">
+        {% endif %}
+    </div>
+    
+    
+</body>
+</html>

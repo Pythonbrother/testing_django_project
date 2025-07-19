@@ -47,20 +47,20 @@ def remove_nothing_return_str(a_char,a_list):
 def examine_prevention_tip(request, epidemic_id):
     if request.method == 'GET':
         epidemic_record = Epidemic.objects.get(id=epidemic_id)
-        food_avoid_list = epidemic_record.food_avoid.split('#')
-        food_take_list = epidemic_record.food_take.split('#')
-        lifestyle_avoid_list = epidemic_record.lifestyle_avoid.split('#')
-        lifestyle_take_list = epidemic_record.lifestyle_take.split('#')
+        food_avoid_list = [word for word in epidemic_record.food_avoid.split('#') if word]
+        food_take_list = [word for word in epidemic_record.food_take.split('#') if word]
+        lifestyle_avoid_list = [word for word in epidemic_record.lifestyle_avoid.split('#') if word]
+        lifestyle_take_list = [word for word in epidemic_record.lifestyle_take.split('#') if word]
         compound_all_tips = food_avoid_list + food_take_list + lifestyle_avoid_list + lifestyle_take_list
         total_tips = len(compound_all_tips)
         return render(request, 'examine_prevention_tip.html', {"epidemic":epidemic_record,'total_tip':total_tips, 'food_avoid_list':food_avoid_list,'food_take_list':food_take_list,'lifestyle_avoid_list':lifestyle_avoid_list,'lifestyle_take_list':lifestyle_take_list})
     else:
         FULL_MARKS_YEARS = 50
         epidemic_record = Epidemic.objects.get(id=epidemic_id)
-        food_avoid_list = epidemic_record.food_avoid.split('#')#score 1.1
-        food_take_list = epidemic_record.food_take.split('#')#score 1
-        lifestyle_avoid_list = epidemic_record.lifestyle_avoid.split('#')#score 1
-        lifestyle_take_list = epidemic_record.lifestyle_take.split('#')#score 1.1
+        food_avoid_list = [word for word in epidemic_record.food_avoid.split('#') if word]#score 1.1
+        food_take_list = [word for word in epidemic_record.food_take.split('#') if word]#score 1
+        lifestyle_avoid_list = [word for word in epidemic_record.lifestyle_avoid.split('#') if word]#score 1
+        lifestyle_take_list = [word for word in epidemic_record.lifestyle_take.split('#') if word]#score 1.1
         
         compound_all_tips = food_avoid_list + food_take_list + lifestyle_avoid_list + lifestyle_take_list
         total_tips = len(compound_all_tips)
@@ -88,17 +88,20 @@ def examine_prevention_tip(request, epidemic_id):
         
         result_year = round(get_year_by_follow_score_percent + (total_years_got_by_mark) )
         
-        print("#########################")
-        print(f"result_year {result_year}")
-        print(f"percent follow {get_year_by_follow_score_percent}")
-        print(f"total years got by mark {total_years_got_by_mark}")
-        
+        all_you_followed = checked_food_avoid_list + checked_food_take_list + checked_lifestyle_avoid_list + checked_lifestyle_take_list
+        all_you_dont_followed = compound_all_tips
+        for tip in all_you_followed:
+            all_you_dont_followed.remove(tip)
+
         if result_year<2:
-            return HttpResponse(f"you can't follow well, you can get disease in {get_year_by_follow_score_percent} years.")
+            message_to_user = f"RED! you can't follow well, you can get disease in {get_year_by_follow_score_percent} years."
+            return render(request,'prevention_result.html', {"message_to_user": message_to_user,"all_you_followed":all_you_followed,"all_you_dont_followed":all_you_dont_followed,'color':'#ff4d4d'})
         elif result_year>FULL_MARKS_YEARS:
-            return HttpResponse(f"you follow well, you can get cover over {get_year_by_follow_score_percent} years.")
+            message_to_user = f"GREEN! you follow well, you can get cover over {get_year_by_follow_score_percent} years."
+            return render(request, 'prevention_result.html',{"message_to_user": message_to_user, "all_you_followed": all_you_followed,"all_you_dont_followed": all_you_dont_followed,'color':'#80ffbf'})
         else:
-            return HttpResponse(f"Hello Success, you get cover at least {result_year} years.")
+            message_to_user = f"YELLOW! Hello Success, you get cover at least {result_year} years."
+            return render(request, 'prevention_result.html',{"message_to_user": message_to_user, "all_you_followed": all_you_followed,"all_you_dont_followed": all_you_dont_followed,'color':'#ffff99'})
 
 def examine_managing_tip(request,epidemic_id):
     if request.method == 'GET':
@@ -114,7 +117,13 @@ def examine_managing_tip(request,epidemic_id):
         total_checked_tips = len(request.POST.getlist("managing_tips"))
 
         managing_percent = round((total_checked_tips/total_tips)*100,1)
-        return HttpResponse(f"Hello Success, you get {managing_percent}")
+
+        all_you_dont_followed = epidemic_managing_tips
+        for tip in checked_tips:
+            all_you_dont_followed.remove(tip)
+        message_to_user = f"Hello Success, you get {managing_percent}"
+        return render(request, 'managing_result.html',{"message_to_user": message_to_user, "all_you_followed": checked_tips,"all_you_dont_followed": all_you_dont_followed})
+
 
 def epidemic_detail(request,epidemic_id):
     if request.method == 'GET':

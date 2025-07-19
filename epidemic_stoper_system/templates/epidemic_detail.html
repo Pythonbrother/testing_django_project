@@ -30,8 +30,9 @@
                 <div class="w-[45%] h-auto border-2 border-black rounded-r-[20px]">
                     <div class="text-[25px] text-center my-[10px] text-black ">{{record.name}}</div>
                     <p class=" pt-[10px] px-[20px] mb-[15px] text-[18px] text-justify">{{record.topic|safe}}</p>
+
                 </div>
-                <div class="w-[30%] h-auto border-2 border-black rounded-[20px]">
+                <div class="w-auto h-auto border-2 border-black rounded-[20px] px-[20px] pb-[20px]">
                     <p class="text-[25px] text-center my-[10px] text-black">Symptoms</p>
 
                         <ul class=" mb-[30px] text-black pt-[10px] px-[20px] text-[18px] text-left"  style="list-style-type:disc">
@@ -39,15 +40,11 @@
                             <li>{{symptom}}</li>
                         {% endfor %}
                         </ul>
-                    <div class="place-items-center ">
-                        <div class=" w-[250px] h-[180px] bg-[url('/static/images/canopy.jpg')] bg-cover bg-center bg-no-repeat border-2 border-black rounded-[20px]  mb-[15px]"></div>
+                        <div class="w-full h-auto ">
+                            <a href={% url 'examine_prevention_tip' record.id %}><button class=" block w-[300px] mx-auto h-[100px] border-2 border-black rounded-[20px] ">Check whether avoid disease or not</button></a>
+                            <a href={% url 'examine_managing_tip' record.id %}><button class=" block mx-auto w-[300px] h-[100px] border-2 border-black  rounded-[20px] ">Check whether follow the daily tasks</button></a>
+                        </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-1 gap-y-2  w-[20%] h-auto border-2 border-black rounded-l-[20px]">
-                    <div class="w-full h-[100%]  text-center pt-[20px]"><a href={% url 'examine_prevention_tip' record.id %}><button class=" mx-[30px] border-2 border-black rounded-[20px] ">Check whether avoid disease or not</button></a></div>
-                    <div class="w-full h-[100%]  text-center pt-[50px] text-justify px-[20px]">You can manage disease by follw the tasks and by avoid diseases.</div>
-                    <div class="w-full h-[100%]  text-center pt-[20px] mb-[15px]"><a href={% url 'examine_managing_tip' record.id %}><button class=" mx-[30px] border-2 border-black  rounded-[20px] ">Check whether follow the daily tasks</button></a></div>
-                </div>
             </div>
         </div>
     </div>
