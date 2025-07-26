@@ -9,28 +9,30 @@
 <body>
 <div class="flex justify-evenly bg-[#141f1f] w-full h-screen overflow-auto">
     <div class="bg-[#141f1f] w-[35%] h-[100%] py-[10px] px-[5px]">
+
         <form onsubmit="event.preventDefault(); send_symptoms();" method="post">{% csrf_token %}
-            <input type="text" id="symptom_box" list='symptoms_list' class="w-[89%] h-[50px] text-[20px] font-mono font-extrabold rounded-[5px]">
+            <a href="javascript:history.back()"><button type="button" class="bg-white w-[10%] h-[50px] rounded-[5px]">နောက်</button></a>
+            <input type="text" id="symptom_box" list='symptoms_list' class="w-[70%] h-[50px] text-[20px] font-mono font-extrabold rounded-[5px]" autocomplete="off">
             <datalist id='symptoms_list'>
                 {% for symptom in symptoms_list%}
                 <option value="{{symptom}}">{{symptom}}</option>
                 {% endfor %}
             </datalist>
-            <button type="submit" class="w-[10%] h-[50px] bg-white rounded-[5px] text-[20px] font-mono font-extrabold">GO</button>    
+            <button type="submit" class="w-[10%] h-[50px] bg-white rounded-[5px] text-[20px] font-mono font-extrabold"> ပြော</button>
 
         <form>
         <div class=" bg-[#141f1f] my-[20px] rounded-[5px] text-white font-mono ">
             <div class="flex justify-center w-[100%] h-[100%]">
-                <button id="note-btn" type='reset' onclick='add()' class=" bg-[#141f1f] rounded-[5px] text-green-400  border-2 p-[5px] ">ADD NOTE</button>
-                <button id="note-btn" type='button' onclick='edit()' class=" bg-[#141f1f] rounded-[5px] text-yellow-400 border-2 p-[5px] ml-[10px]">EDIT NOTE</button>
+                <button id="note-btn" type='reset' onclick='add()' class=" bg-[#141f1f] rounded-[5px] text-green-400  border-2 p-[5px] ">စာရေးမှတ်</button>
+                <button id="note-btn" type='button' onclick='edit()' class=" bg-[#141f1f] rounded-[5px] text-yellow-400 border-2 p-[5px] ml-[10px]">စာပြန်ပြင်</button>
 
             </div>
             <div class="p-[10px] w-[100%] h-[100%] text-center"> 
-                <h3 id="note_header">NOTE:</h3>
+                <h3 id="note_header">စာရွက်:</h3>
                 <p id="note" class="text-green-400 border-2 text-left rounded-[5px]" ></p>
             </div>
             <div class="p-[10px] w-[100%] h-[100%] text-center"> 
-                <h3 id="about_disease_header" class="hidden">Disease Name:</h3>
+                <h3 id="about_disease_header" class="hidden">ရောဂါအကြောင်း:</h3>
                 <p id="about_disease" class="text-green-400 border-2 text-left hidden rounded-[5px]" ></p>
             </div>
         </div>
@@ -38,7 +40,7 @@
     <div class="bg-gradient-to-l from-white to-[#8cd98c] w-[65%] h-[100%] rounded-l-[120px] font-mono">
         <div class="place-items-center">
             <p class="text-blue-800 my-[20px] px-[30px] text-[30px] rounded-[5px] ">
-               3 Expert Artificial Doctors Say:
+               ကျွမ်းကျင်ဆရာဝန်တုပ ဉာဏ်ရည်တု ကျွမ်းကျင်ဆရာဝန်များ:
             </p>
         </div>
         <div class="place-items-center">
@@ -48,20 +50,20 @@
         </div>
         <div class="flex justify-evenly">
             <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
-                <img src="{% static 'images/doctor1.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
-                <p class="text-[black] text-[15px]">Doctor1's Result:</p>
+                <img src="{% static 'images/doctor4.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
+                <p class="text-[black] text-[15px]">အထူးဆရာဝန်</p>
                 <p id="doctor1_result" class="text-black"></p>
             </div>
             <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
                 <img src="{% static 'images/doctor2.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
-                <p class="text-black text-[15px]">Doctor2's Result:</p>
+                <p class="text-black text-[15px]">အကူဆရာဝန်</p>
                 <p id="doctor2_result" class="text-black"></p>
             </div>
-            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
+            <!--div class="w-[30%] text-center text-white text-[20px] font-extrabold">
                 <img src="{% static 'images/doctor3.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
-                <p class="text-black text-[15px]">Doctor3's Result:</p>
+                <p class="text-black text-[15px]">အကူဆရာဝန်</p>
                 <p id="doctor3_result" class="text-black"></p>
-            </div>
+            </div-->
         </div>
 
     </div>
@@ -108,9 +110,13 @@
                 }).then(response => response.json()).then(data => {
                     all_results=data.all_results;
                     document.getElementById('about_disease').innerHTML = all_results.topic1;
-                    document.getElementById('you_have').textContent = `You have these Symptoms: ${data.response_symptoms}`;
-                    document.getElementById('doctor2_result').textContent = `${data.all_results.result1}`;
-                    
+                    document.getElementById('you_have').textContent = `သင့်ရဲ့ လက္ခဏာများက တော့ ${data.response_symptoms} ဖြစ်ပါတယ်။`;
+                    document.getElementById('doctor1_result').textContent = `${data.all_results.result1}`;
+                    document.getElementById('doctor2_result').textContent = `${data.all_results.result2}`;
+                    document.getElementById('doctor1_result').addEventListener('click',()=>{
+                        document.getElementById('about_disease').innerHTML = all_results.topic1;})
+                    document.getElementById('doctor2_result').addEventListener('click',()=>{
+                        document.getElementById('about_disease').innerHTML = all_results.topic2;})
                 });
             document.getElementById('symptom_box').value = '';
             document.getElementById('note').textContent = '';

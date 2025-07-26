@@ -6,20 +6,24 @@
     <title>Epidemic Detail</title>
     {% tailwind_css %}
 </head>
-<body class="bg-[#8cd98c] font-mono ">
+<body class="bg-[#8cd98c] font-mono  leading-8">
     <div class="w-auto h-screen overflow-auto">
         <div class="flex justify-start">
-            <h1 class="text-[#0A400C] w-[30%] pl-[10px] text-[30px] text-left">Managing Chronic Diseases System</h1>
+            <h1 class="text-[#0A400C] w-[30%] pl-[10px] my-[10px] text-[30px] text-left">နာတာရှည်ရောဂါအကြောင်း</h1>
             <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
                 {% if request.user.is_authenticated %}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
-                    <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+                    {% if request.user.is_admin %}
+                        <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'admin:index' %}">{{request.user.username}}</a></div>
+                    {%else%}
+                        <div><a class="bg-white text-white border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account' %}">{{request.user.username}}</a></div>
+                    {% endif %}
+                    <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">အကောင့်ထွက်</button></form>
                 {% else %}
-                    <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
-                    <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+                    <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">အကောင့်ဖွင့်</a></div>
+                    <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">အကောင့်ဝင်</a></div>
                 {% endif %}
             </div>
         </div>
@@ -41,8 +45,8 @@
                         {% endfor %}
                         </ul>
                         <div class="w-full h-auto ">
-                            <a href={% url 'examine_prevention_tip' record.id %}><button class=" block w-[300px] mx-auto h-[100px] border-2 border-black rounded-[20px] ">Check whether avoid disease or not</button></a>
-                            <a href={% url 'examine_managing_tip' record.id %}><button class=" block mx-auto w-[300px] h-[100px] border-2 border-black  rounded-[20px] ">Check whether follow the daily tasks</button></a>
+                            <a href={% url 'examine_prevention_tip' record.id %}><button class=" block w-[300px] mx-auto my-[10px] h-[100px] border-2 border-black rounded-[20px] ">ဒီရောဂါ မဖြစ်အောင် သင့်ကိုယ်သင် စမ်းစစ်ပါ</button></a>
+                            <a href={% url 'examine_managing_tip' record.id %}><button class=" block mx-auto w-[300px] h-[100px] border-2 border-black  rounded-[20px] ">‌ဒီရောဂါသည် အတွက် နေ့စဉ် လိုက်နာရမည်များ</button></a>
                         </div>
                     </div>
             </div>

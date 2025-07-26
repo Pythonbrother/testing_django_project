@@ -10,10 +10,8 @@ def diagnosis(request):
     diagnosis_model_lr = joblib.load(r"myanmar_model_lr50.pkl")
     labelencoder_lr = joblib.load(r"myanmar_labelencoder_lr50.pkl")
 
-    #diagnosis_model_rf = joblib.load(r"myanmar_model_rf50.pkl")
-    #labelencoder_rf = joblib.load(r"myanmar_labelencoder_rf50.pkl")
-    #diagnosis_model_lr = joblib.load(r"advance_model_lr50.pkl")
-    #labelencoder_lr = joblib.load(r"advance_labelencoder_lr50.pkl")
+    diagnosis_model_rf = joblib.load(r"myanmar_model_rf50.pkl")
+    labelencoder_rf = joblib.load(r"myanmar_labelencoder_rf50.pkl")
     if request.method == 'POST':
         if request.POST.get('symptoms_comp'):
             symptoms = request.POST.get('symptoms_comp')
@@ -22,16 +20,22 @@ def diagnosis(request):
                     get_symptoms.append(symptom)
         elif request.POST.get('symptoms'):
             symptoms = request.POST.get('symptoms')
-
+        print(symptoms)
+        print("########################")
         result1 = str(labelencoder_lr.inverse_transform(diagnosis_model_lr.predict([symptoms]))[0])
+        print(result1)
+        print("########################$")
         doctor1_result = get_object_or_404(Diseases_For_Ai, disease_name=result1)
 
-        #result2 = str(labelencoder_rf.inverse_transform(diagnosis_model_rf.predict([symptoms]))[0])
-        #doctor2_result = get_object_or_404(Diseases_For_Ai, disease_name=result2)
+        result2 = str(labelencoder_rf.inverse_transform(diagnosis_model_rf.predict([symptoms]))[0])
+        doctor2_result = get_object_or_404(Diseases_For_Ai, disease_name=result2)
 
         all_results = {
                        'result1':result1,
-                       'topic1':doctor1_result.topic}
+                       'topic1':doctor1_result.topic,
+                        'result2': result2,
+                        'topic2': doctor2_result.topic,
+        }
 
         response_symptoms=symptoms
         return JsonResponse({'all_results':all_results,'response_symptoms':response_symptoms,'get_symptoms':get_symptoms})

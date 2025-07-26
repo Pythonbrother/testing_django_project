@@ -1,14 +1,42 @@
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Create Article</title>
+    {% tailwind_css %}
 </head>
 <body>
-    <form method="post" action="{% url 'create_article' %}" enctype="multipart/form-data">
-        {%csrf_token%}
-        {{form.as_p}}
-        <button type="submit">Submit</button>
-    </form>
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-8">
+
+    <!-- Account Header -->
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">
+        ဆောင်းပါးရေးမယ်
+    </h1>
+
+    <div class="space-y-4">
+        <form method="post" action="{% url 'create_article' %}" enctype="multipart/form-data">{% csrf_token %}
+            <div><label for="name">ဆောင်းပါးနာမည်:</label><br>
+            <input type="text" name="name" id="name" autocomplete="off"></div>
+
+            <div><label for="caption">ဆောင်းပါးအညွှန်းစာ:</label><br>
+            <input  name="caption" class="h-[100px] w-[400px]" id="caption" autocomplete="off"></div>
+
+            <div><label for="topic">အကြောင်းအရာ:</label><br>
+            <input type="text" class="h-[100px] w-[400px]" name="topic" id="topic" autocomplete="off"></div>
+
+            <div><label for="photo">ဓာတ်ပုံ:</label><br>
+            <input type="file" name="photo" id="photo" autocomplete="off"></div>
+
+            <div><button type="submit">ပို့မယ်</button></div>
+            {% if errors %}
+                {% for error in errors %}
+                    <div style="color: red;">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+
+</div>
 </body>
 </html>

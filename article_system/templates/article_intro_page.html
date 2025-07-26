@@ -8,34 +8,40 @@
 </head>
 <body class="bg-[url('/static/images/leaf.jpg')] bg-cover bg-center bg-no-repeat">
     <div class="flex justify-start">
-        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">ရောဂါရှာဖွေခြင်းနှင့် ‌ရင်ဆိုင်ကြမယ် နာတာရှည်ရောဂါ
+</h1>
         <div class="flex justify-evenly w-[70%] h-auto text-white text-[15px] pt-[5px]">
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
             {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                    <div><a class="border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
                 {% else%}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                    <div><a class="text-black border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account' %}">{{request.user.username}}</a></div>
                 {% endif %}
 
-                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">အကောင့်ထွက်</button></form>
             {% else %}
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">အကောင့်ဖွင့်</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">အကောင့်ဝင်</a></div>
             {% endif %}
         </div>
     </div>
     <div class="flex justify-around my-[10px] ">
-        <h1 class="w-[30%] text-center text-[#ffeb99]   font-mono font-extrabold text-[30px]">Health Article <a href="{% url 'create_article' %}">📝</a></h1>
+        <h1 class="w-[30%] text-center text-[#ffeb99]   font-mono font-extrabold text-[30px]">ဆောင်းပါးများ <a href="{% url 'create_article' %}">📝</a></h1>
         <div class="w-[60%] h-[40px] "></div>
     </div>
 
         <div class="flex justify-around">
         <div class="backdrop-blur-[5px] w-[30%] h-auto border-[1px] border-black rounded-[15px] p-[10px] shadow-[_0px_0px_20px_black,_-0px_-0px_20px_black]">
             <form method="post">{% csrf_token%}
-                <input class="rounded-[30px]" type="text" placeholder="search the article" name="article">
+                <input id='name_search' name='name_search' class="rounded-[30px]" list="name_list" type="text" placeholder="ရှာမယ်" autocomplete="off">
+                <datalist id="name_list">
+                    {% for record in all_records%}
+                    <option value="{{record.name}}">{{record.caption}}</option>
+                    {% endfor %}
+                </datalist>
                 <button class="h-[40px] bg-white rounded-[30px]" type="submit">🔍</button>
             </form>
             <div class="text-white font-mono font-extralight p-[10px]">

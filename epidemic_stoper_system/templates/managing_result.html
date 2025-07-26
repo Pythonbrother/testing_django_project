@@ -6,17 +6,19 @@
     <title>Title</title>
     {% tailwind_css %}
 </head>
-<body class="bg-[#b3cccc]">
+<body class="bg-[#b3cccc] leading-8 font-mono">
     <div class="w-[600px] h-auto bg-[#99ddff] rounded-[20px] mx-auto my-[30px] px-[10px] py-[20px]">
-        <p class="text-[30px]  text-justify">{{message_to_user}}</p>
+        <p class="text-[30px]  text-justify leading-[50px]">{{message_to_user}}</p>
         <hr class="border-[1px] border-white my-[20px]">
         {%if all_you_followed%}
-            <span class="text-[20px]  text-justify">you followed:<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_followed %}<li>{{tip}}</li>{% endfor %}</ul>
+            <span class="text-[20px]  text-justify">အောက်ပါ သင့်ရဲ့အလေ့ကျင့်ကောင်း များကို ပျက်မသွားအောင် ဆက်ထိန်းထားပါ။<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_followed %}<li>{{tip}}</li>{% endfor %}</ul>
         <hr class="border-[1px] border-white my-[20px]">
         {%endif%}
         {% if all_you_dont_followed %}
-            <span class="text-[20px]  text-justify">you unfollowed:<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_dont_followed %}<li>{{tip}}</li>{% endfor %}</ul>
+            <span class="text-[20px]  text-justify">အောက်ပါ မလိုက်နာနိုင်သေးသော အချက်များကို ‌လိုက်နာနိုင်လာဖို့လိုပါတယ်။<br></span><ul class="text-[20px]  text-justify" style="list-style-type:disc;padding-left:20px;"> {% for tip in all_you_dont_followed %}<li>{{tip}}</li>{% endfor %}</ul>
         <hr class="border-[1px] border-white my-[20px]">
+        <a href="javascript:history.back()" class="ml-[250px]"><button class="rounded-[5px] w-[50px] h-10 border-[1px] border-white text-black">OK</button></a>
+
         {% endif %}
     </div>
 

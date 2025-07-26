@@ -141,5 +141,5 @@ AUTH_USER_MODEL = 'account_system.User_Account'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SESSION_COOKIE_AGE = 3800
+SESSION_COOKIE_AGE = 6000
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

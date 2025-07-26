@@ -6,24 +6,24 @@
     <title>Article Detail</title>
     {% tailwind_css %}
 </head>
-<body class="bg-[#8cd98c] font-mono h-auto">
+<body class="bg-[#8cd98c] font-mono h-auto  leading-8">
     <div class="flex justify-start">
-        <h1 class="text-[#0A400C] w-[30%] pl-[50px] text-[20px] text-right">Diagnosis Test and Managing Chronic Diseases System</h1>
+        <h1 class="text-[#0A400C] w-[30%] pl-[50px] text-[30px] text-right  my-[10px]">ဆောင်းပါးဖတ်မယ်</h1>
         <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">Diagnosis Test</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">Manage Chronic Disease</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">Contribute topic</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
             {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'admin:index' %}">{{request.user.username}}</a></div>
                 {% else%}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="">{{request.user.username}}</a></div>
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account'%}">{{request.user.username}}</a></div>
                 {% endif %}
 
-                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">logout</button></form>
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">အကောင့်ထွက်</button></form>
             {% else %}
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">Signup</a></div>
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">Login</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">အကောင့်ဖွင့်</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">အကောင့်ဝင်</a></div>
             {% endif %}
         </div>
     </div>
@@ -35,16 +35,16 @@
                 <img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px]">
             {% endif %}
             {% if request.user.is_authenticated%}
-                <form>{%csrf_token%}<input type="text" id="comment_input_box" placeholder="write comment" class="w-[200px] rounded-[20px]" ><button id="sent_comment_btn" onclick='sent_comment(event)'>&nbsp;Sent</button></form></div>
+                <form>{%csrf_token%}<input type="text" id="comment_input_box" placeholder="မေးမယ်၊ ပြောမယ်" class="w-[200px] rounded-[20px]" ><button id="sent_comment_btn" onclick='sent_comment(event)'>&nbsp;ရေးမယ်</button></form></div>
             {% else %}
-                <a href="{% url 'login' %}"><input type="text" id="comment_input_box" placeholder="write comment" class="w-[200px] rounded-[20px]" ><button>&nbsp;Sent</button></a></div>
+                <a href="{% url 'login' %}"><input type="text" id="comment_input_box" placeholder="မေးမယ်၊ ပြောမယ်" class="w-[200px] rounded-[20px]" ><button>&nbsp;ရေးမယ်</button></a></div>
             {% endif %}
         <div class="w-[70%]"><p class="text-justify px-[20px] mb-[30px]">{{article_record.topic|safe}}</p>
             <div class="w-auto  h-[100px] mx-[20px] py-[10px]">
-                <button id="comment_btn"  type='button' onclick="show_comment()" class="rounded-[5px] border-2 border-black p-[5px] mr-[50px]">Show Comments</button>
+                <button id="comment_btn"  type='button' onclick="show_comment()" class="rounded-[5px] border-2 border-black p-[5px]">မှတ်ချက်ပြ</button><span class="ml-[10px]">ရေးသူ:{{article_record.creator}}</span>
                 {% if request.user.is_authenticated and request.user == article_record.creator %}
-                    <a href="{% url 'update_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">update post</button></a>
-                    <a href="{% url 'delete_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">delete post</button></a>
+                    <a href="{% url 'update_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px] ml-[10px]">ဆောင်းပါးပြင်မယ်</button></a>
+                    <a href="{% url 'delete_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">ဆောင်းပါးဖျက်မယ်</button></a>
                 {% endif %}
                 <form method='post'>{%csrf_token%}<p id="comments" class="my-[10px] hidden"></p></form>
             </div>
@@ -54,9 +54,9 @@
 <script>
     let comments_data = JSON.parse("{{comment_data|safe|escapejs}}")
     function show_comment(){
-        if (document.getElementById("comment_btn").textContent == "Show Comments"){
+        if (document.getElementById("comment_btn").textContent == "မှတ်ချက်ပြ"){
             document.getElementById("comments").style.display = 'block';
-            document.getElementById("comment_btn").textContent = "Off Comments";
+            document.getElementById("comment_btn").textContent = "မှတ်ချက်ပိတ်";
             document.getElementById("comments").textContent = '';
             for (let comment of comments_data){
 
@@ -80,13 +80,13 @@
 
                 let answer_box = document.createElement('input');
                 answer_box.id = `${comment.comment_pk}_answer_box`;
-                answer_box.placeholder = "write replies";
+                answer_box.placeholder = "ပြန်စာရေးမယ်";
                 answer_box.className = "rounded-[20px] h-[40px] w-[200px]";
 
                 let answer_submit = document.createElement('button');
                 answer_submit.type = 'submit';
                 answer_submit.id = `${comment.comment_pk}_answer_submit`;
-                answer_submit.textContent = "submit";
+                answer_submit.textContent = "ပို့မယ်";
                 answer_submit.onclick = () => {
                     event.preventDefault();
                     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -108,18 +108,19 @@
                 let replies = document.createElement('button');
                 replies.type = 'button';
                 replies.id = `${comment.comment_pk}_replies`;
-                replies.textContent = `${comment.replies.length} replies`;
+                replies.textContent = `${comment.replies.length} ပြန်စာပြ`;
                 replies.onclick = () => {additional_box.style.display='block'}
                 replies.className = "ml-[150px] my-[10px] text-blue-500 border-[1px] border-black rounded-[10px]";
 
                 let control_additional_Box = document.createElement('button');
                 control_additional_Box.type = 'button';
-                control_additional_Box.textContent = "close the box";
+                control_additional_Box.textContent = "ပြန်စာပိတ်";
                 control_additional_Box.id = `${comment.comment_pk}_control_additional_Box`;
                 control_additional_Box.onclick = () => {additional_box.style.display='none'};
                 control_additional_Box.className = "mx-[10px] my-[10px] text-red-500 border-[1px] border-black rounded-[5px]";
+                if ('{{request.user.is_authenticated}}' == 'True'){
                 additional_box.append(answer_box);
-                additional_box.append(answer_submit);
+                additional_box.append(answer_submit);}
 
                 each_comment.append(cmt_text)
                 each_comment.append(replies)
@@ -132,7 +133,7 @@
     }
         else{
             document.getElementById("comments").style.display = 'none';
-            document.getElementById("comment_btn").textContent = "Show Comments";
+            document.getElementById("comment_btn").textContent = "မှတ်ချက်ပြ";
     }
     }
     function sent_comment(event){

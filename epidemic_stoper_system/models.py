@@ -2,7 +2,7 @@ from django.db import models
 from account_system.models import User_Account
 
 class Epidemic(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,unique=True)
     topic = models.TextField(null=True, blank=True)
     symptoms = models.TextField()
     food_avoid = models.TextField(null=True, blank=True)  # for protection

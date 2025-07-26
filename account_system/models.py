@@ -19,9 +19,6 @@ class User_Manager(BaseUserManager):
         user.is_active = True
         user.is_staff = True
         user.is_admin = True
-        user.country = "Myanmar"
-        user.gender = "Male"
-        user.DOB = "2003-03-30"
         user.save(using=self._db)
         return user
 
@@ -33,7 +30,7 @@ class User_Account(AbstractUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    country = models.CharField(max_length=30)
+    #country = models.CharField(max_length=30)
     gender = models.CharField(max_length=9)
     DOB = models.DateField(null=True,blank=True)
 

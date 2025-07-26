@@ -1,5 +1,5 @@
 import random,json,datetime
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.http import JsonResponse, HttpResponse
 from .models import *
 from .forms import Article_Form
@@ -13,18 +13,22 @@ def create_article(request):
             if request.user.is_authenticated:
                 article_record.creator=request.user
             article_record.save()
-        return HttpResponse('Article creation success')
+            new_pk = article_record.pk
+        return redirect('article_detail',new_pk)
     else:
         form = Article_Form()
         return render(request, 'create_article.html', {'form':form})
 
 def article_intro(request):
     if request.method == 'POST':
-        pass
+        search_value = request.POST.get('name_search')
+        record = get_object_or_404(Article, name=search_value)
+        return redirect('article_detail', record.pk)
     else:
+        all_records = Article.objects.values('name','caption')
         twelve_random_num_from_articles_model = random.sample(list(Article.objects.values_list('id',flat=True)),12)
         twelve_random_articles = Article.objects.filter(id__in=twelve_random_num_from_articles_model)
-        return render(request, 'article_intro_page.html', {'random_articles':twelve_random_articles})
+        return render(request, 'article_intro_page.html', {'random_articles':twelve_random_articles,'all_records':all_records})
 
 def article_detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
@@ -70,7 +74,7 @@ def article_detail(request, article_pk):
 
 class update_article(UpdateView):
     model = Article
-    fields = ['name','topic','photo']
+    fields = ['name','caption','topic','photo']
     template_name = 'update_article.html'
     def get_success_url(self):
         return reverse('article_detail', kwargs={'article_pk': self.object.pk})

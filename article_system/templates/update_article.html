@@ -8,7 +8,7 @@
 {% if request.user.is_authenticated and request.user == object.creator %}
     <form method="post">{% csrf_token %}
     {{form.as_p}}
-    <button type="submit">Submit</button>
+    <button type="submit">ပြင်မည်</button>
     </form>
 {% else %}
     <h1>You are NOT RIGHT PERSON!</h1>

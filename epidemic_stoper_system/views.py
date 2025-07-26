@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import Epidemic_insertion_Form
 from .models import Epidemic
@@ -14,10 +14,14 @@ def home_view(request):
 
 def epidemic_intro(request):
     if request.method == 'GET':
+        all_records = Epidemic.objects.values('pk','name')
         twelve_random_num_from_epidemic_model = random.sample(list(Epidemic.objects.values_list('id',flat=True)),12)
         twelve_random_records = Epidemic.objects.filter(id__in=twelve_random_num_from_epidemic_model)
-        return render(request, 'epidemic_intro_page.html', {'twelve_random_records':twelve_random_records})
-
+        return render(request, 'epidemic_intro_page.html', {'twelve_random_records':twelve_random_records,'all_records':all_records})
+    else:
+        search_value = request.POST.get('disease_search')
+        record = get_object_or_404(Epidemic,name=search_value)
+        return redirect('epidemic_detail',record.pk)
 def epidemic_insertion_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -94,13 +98,18 @@ def examine_prevention_tip(request, epidemic_id):
             all_you_dont_followed.remove(tip)
 
         if result_year<2:
-            message_to_user = f"RED! you can't follow well, you can get disease in {get_year_by_follow_score_percent} years."
+            if get_year_by_follow_score_percent <= 0:
+                get_year_by_follow_score_percent = 1
+            #message_to_user = f"RED! you can't follow well, you can get disease in {get_year_by_follow_score_percent} years."
+            message_to_user = f"‌အခုဖြေဆိုချက်အရ သင့်ကျန်းမာရေးအတွက် နေထိုင်မှုပုံစံ မကောင်းပါ။ ဒီလို အလေ့အကျင့်ကြောင့် ရောဂါက အခုမှစလို့ {get_year_by_follow_score_percent} နှစ် အတွင်း ဝင်လာနိုင်ပါတယ်။"
             return render(request,'prevention_result.html', {"message_to_user": message_to_user,"all_you_followed":all_you_followed,"all_you_dont_followed":all_you_dont_followed,'color':'#ff4d4d'})
         elif result_year>FULL_MARKS_YEARS:
-            message_to_user = f"GREEN! you follow well, you can get cover over {get_year_by_follow_score_percent} years."
+            #message_to_user = f"GREEN! you follow well, you can get cover over {get_year_by_follow_score_percent} years."
+            message_to_user = f"အခု ဖြေဆိုချက်အရ သင့်ကျန်းမာရေးအတွက် နေထိုင်မှု ပုံစံ အလွန်ကောင်း ပါတယ်။ ဒီလို အလေ့အကျင့်ကြောင့် ရောဂါက အခုမှစလို့ {get_year_by_follow_score_percent} နှစ် အတွင်း လုံးဝ ဖြစ်နိုင်ချေမရှိပါ။"
             return render(request, 'prevention_result.html',{"message_to_user": message_to_user, "all_you_followed": all_you_followed,"all_you_dont_followed": all_you_dont_followed,'color':'#80ffbf'})
         else:
-            message_to_user = f"YELLOW! Hello Success, you get cover at least {result_year} years."
+            #message_to_user = f"YELLOW! Hello Success, you get cover at least {result_year} years."
+            message_to_user = f"အခု ဖြေဆိုချက်အရ သင့်ကျန်းမာရေးအတွက် နေထိုင်မှု ပုံစံ သင့်တင့် ပါတယ်။ ဒီလို အလေ့အကျင့်ကြောင့် ရောဂါက အခုမှစလို့ {result_year} နှစ်ဝန်းကျင်ထိ ရောဂါ ဖြစ်နိုင်ချေမရှိပါ။"
             return render(request, 'prevention_result.html',{"message_to_user": message_to_user, "all_you_followed": all_you_followed,"all_you_dont_followed": all_you_dont_followed,'color':'#ffff99'})
 
 def examine_managing_tip(request,epidemic_id):
@@ -121,7 +130,8 @@ def examine_managing_tip(request,epidemic_id):
         all_you_dont_followed = epidemic_managing_tips
         for tip in checked_tips:
             all_you_dont_followed.remove(tip)
-        message_to_user = f"Hello Success, you get {managing_percent}"
+        #message_to_user = f"Hello Success, you get {managing_percent}"ရာခိုင်နှုန်းလောက် လိုက်နာနေပါတယ်။ ဆက်ကြိုးစားပါ။
+        message_to_user = f"{managing_percent} ရာခိုင်နှုန်း လိုက်နာနေပါတယ်။ ဆက်ကြိုးစားပါ။"
         return render(request, 'managing_result.html',{"message_to_user": message_to_user, "all_you_followed": checked_tips,"all_you_dont_followed": all_you_dont_followed})
 
 
@@ -131,7 +141,13 @@ def epidemic_detail(request,epidemic_id):
         symptoms = record.symptoms.split(",")
         return render(request, 'epidemic_detail.html', {'record':record, 'symptoms':symptoms})
 
-
+def my_account(request):
+    if request.method == 'GET':
+        if (request.user.is_authenticated):
+            my_upload_records = Article.objects.filter(creator=request.user)
+            return render(request, 'my_account.html', {'my_records':my_upload_records})
+        else:
+            return redirect('login')
 
 
 def test(request, article_pk):

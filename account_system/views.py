@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import Custom_UserCreation_Form
+
 def signup_view(request):
     if request.method == 'GET':
         form = Custom_UserCreation_Form()

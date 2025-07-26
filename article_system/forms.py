@@ -4,4 +4,4 @@ from django.forms import ModelForm
 class Article_Form(ModelForm):
     class Meta:
         model = Article
-        fields = ['name','topic','photo']
+        fields = ['name','caption','topic','photo']
