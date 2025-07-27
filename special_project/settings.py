@@ -46,9 +46,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-TAILWIND_APP_NAME = 'theme'
+
+TAILWIND_APP_NAME = 'theme'  # i made it
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # i made it
+
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # i made it
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -116,19 +119,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 #LANGUAGE_CODE = "en-us"
-LANGUAGE_CODE = "my"
+LANGUAGE_CODE = "my"  # i made it
 
-TIME_ZONE = "Asia/Yangon"
+TIME_ZONE = "Asia/Yangon"  # i made it
 
 USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'  # i made it
+LOGOUT_REDIRECT_URL = 'login'  # i made it
 
-INTERNAL_IPS = ["127.0.0.1"]
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+INTERNAL_IPS = ["127.0.0.1"]  # i made it
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"  # i made it
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -136,19 +139,19 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 #STATIC_URL = "static/"
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'theme/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'  # i made it
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'theme/static')]  # i made it
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # i made it
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"  # i made it
 
-AUTH_USER_MODEL = 'account_system.User_Account'
+AUTH_USER_MODEL = 'account_system.User_Account'  # i made it
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'  # i made it
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # i made it
 
-SESSION_COOKIE_AGE = 6000
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 6000  # i made it
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # i made it 
