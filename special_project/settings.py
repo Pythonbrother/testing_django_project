@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 TAILWIND_APP_NAME = 'theme'
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
