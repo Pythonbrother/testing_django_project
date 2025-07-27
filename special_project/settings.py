@@ -154,4 +154,4 @@ MEDIA_URL = '/media/'  # i made it
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # i made it
 
 SESSION_COOKIE_AGE = 6000  # i made it
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # i made it 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # i made it

@@ -16,8 +16,11 @@ def create_article(request):
             new_pk = article_record.pk
         return redirect('article_detail',new_pk)
     else:
-        form = Article_Form()
-        return render(request, 'create_article.html', {'form':form})
+        if request.user.is_authenticated:
+            form = Article_Form()
+            return render(request, 'create_article.html', {'form':form})
+        else:
+            return redirect('login')
 
 def article_intro(request):
     if request.method == 'POST':
