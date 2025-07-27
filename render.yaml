@@ -8,6 +8,6 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: special_project.settings
       - key: SECRET_KEY
-        value: your-secret-key
+        value: "django-insecure-udip3ijuu9s6ief9n8$c15f6s$ny7k#+qm89-$u8ns2s)bcs)t"
       - key: DEBUG
         value: False
