@@ -1,7 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+import datetime
+
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
-from .models import Diseases_For_Ai
+from .models import *
+from django.db.models import Count
 import joblib
+import json
 # Create your views here.
 def diagnosis(request):
     #symptoms_list = ['body ache', 'nausea', 'scaly patches', 'nosebleed', 'chills', 'yellow skin', 'headache', 'back pain', 'swelling in ankles or feet or hands or face (edema)', 'painful defecation', 'cold feets', 'muscle cramps', 'abdominal discomfort', 'joint pain', 'burning stomach pain', 'frequent infections', 'weight loss', 'thickened skin', 'facial masking', 'slow digestion', 'knees pain', 'loss smell', 'avoidance of interaction', 'abdominal swelling', 'dark urine', 'hair thinning', 'pale stool', 'sadness', 'excessive sweating', 'rapid breathing', 'white or red patches in the mouth', 'low mood', 'bleeding gum', 'neck stiffness', 'excessive salivation', 'painful swallowing', 'pain near navel', 'weakness', 'sweatingnausea', 'skin pain', 'constipation', 'dizziness', 'repeating questions', 'arm numbness', 'rash', 'lower right abdominal pain', 'forgetting recent events', 'dry cough', 'muscle stiffness', 'vision loss', 'itchy throat', 'slurry speech', 'sensitivity to heat', 'tingling in feet', 'persistent cough', 'urination less than normal', 'cough', 'difficulty urinating', 'lower abdominal pain', 'loss appetite', 'overthinking', 'easy bruising', 'bluish fingernails', 'loss height', 'tingling in hands', 'visual problems', 'slow healing wounds', 'cold hands', 'difficulty swallowing', 'jaw muscle spasms', 'anal pain', 'ankles pain', 'frequent urination', 'mood and personality changes', 'shortness breath', 'excessive thirst', 'jaw muscle stiffness', 'nervousness', 'difficulty chewing', 'cough with mucus', 'cloudy urine', 'mouth pain', 'red patches', 'painful chewing', 'arm pain', 'one sided headache', 'small cramped handwriting', 'decreased range of motion', 'bad breath', 'increased hunger', 'muscle pain', 'sensitivity to light', 'pain in left arm', 'muscle tension', 'itching', 'vomiting', 'hallucinations', 'cough at night', 'excess gas', 'balance problems', 'wheezing', 'right upper abdominal pain', 'misplacing things', 'blurry vision', 'fast heartbeat', 'pulsing headache', 'black stool', 'watery eyes', 'bluish lips', 'blood in urine', 'sneezing', 'sensitivity to cold', 'swollen joints', 'snoring', 'stooped posture', 'fever', 'chest tightness', 'inability to retrace steps', 'excess body fat', 'night sweats', 'easily broken bones', 'stiffness muscle', 'itchy eyes', 'eye pain', 'anal itching', 'sensitivity to sound', 'depression', 'joint stiffness', 'mucus in poop', 'cough with blood', 'difficulty walking', 'swollen ankles', 'abdominal pain', 'persistent cough with mucus', 'sweating', 'red eyes', 'excessive worry or fear or doubt', 'redness or warmth around joints', 'paralysis', 'facial droop', 'lumps near the anus', 'urgency', 'pale skin', 'neck swelling', 'ffrequent infections', 'muscle weakness', 'thickened nails', 'dehydration (dry mouth or dark urine)', 'bloating', 'painful urination', 'hoarseness', 'sleepy', 'coordination problems', 'mouth ulcer', 'concentration problems', 'panic attacks', 'sleep apnea', 'pale lips', 'side pain below ribs', 'weight gain', 'vomiting blood', 'runny nose', 'poor judgment', 'tingling at bite site', 'chest pain', 'swollen lymph nodes', 'aura', 'indigestion', 'confusion with time or place', 'bone pain', 'swelling near the anus', 'itchy nose', 'tremors', 'aggression', 'sore throat', 'numbness in hands', 'tongue pain', 'increased appetite', 'swelling in joints', 'dry skin', 'heartburn', 'shuffling walk', 'weakness on one side', 'slow movement', 'tight feeling in the throat', 'loss interest', 'excessive blushing', 'sleep issues', 'creaking sounds', 'numbness of the tongue', 'clammy hands', 'blisters', 'confusion', 'numbness on right side', 'shaking hands', 'slow heart rate', 'shortness breath while activity', 'abdominal tenderness', 'muscle spasms', 'sores in mouth and sores in genitals', 'hydrophobia (fear of water)', 'nasal congestion', 'enlarged liver (feel like a lump under the ribs)', 'difficulty completing familiar tasks', 'bulging eyes', 'jaw pain', 'pelvic pain', 'fatigue', 'irritability', 'frequent respiratory infections', 'diarrhea', 'numbness in legs', 'back pain below ribs', 'red bleeding during bowel movement', 'memory loss']
@@ -20,11 +24,11 @@ def diagnosis(request):
                     get_symptoms.append(symptom)
         elif request.POST.get('symptoms'):
             symptoms = request.POST.get('symptoms')
-        print(symptoms)
-        print("########################")
+        #print(symptoms)
+        #print("########################")
         result1 = str(labelencoder_lr.inverse_transform(diagnosis_model_lr.predict([symptoms]))[0])
-        print(result1)
-        print("########################$")
+        #print(result1)
+        #print("########################$")
         doctor1_result = get_object_or_404(Diseases_For_Ai, disease_name=result1)
 
         result2 = str(labelencoder_rf.inverse_transform(diagnosis_model_rf.predict([symptoms]))[0])
@@ -45,3 +49,44 @@ def diagnosis(request):
     else:
         return render(request, 'diagnosis.html', {'symptoms_list':symptoms_list})
     return render(request, 'diagnosis.html')
+
+def show_report(request):
+    if request.method == 'GET':
+        year = datetime.datetime.now().year
+        all_report_records = User_Disease_report.objects.filter(created_time__year=year).values('disease__disease_name').annotate(count=Count('disease')).order_by('-count')
+        years = User_Disease_report.objects.values_list('created_time__year',flat=True)
+        years = set(years)
+        x_axis = []
+        y_axis = []
+
+        for record in all_report_records:
+            x_axis.append(record['disease__disease_name'])
+            y_axis.append(record['count'])
+
+        data_pie = {'diseases':x_axis[:5],'total_case':y_axis[:5]}
+        data_bar = {'diseases':x_axis,'total_case':y_axis}
+        return render(request, 'report.html', {'records': all_report_records,'data_pie':json.dumps(data_pie),'data_bar':json.dumps(data_bar),'years':years,'year':year})
+    else:
+        year = request.POST.get('year')
+        all_report_records = User_Disease_report.objects.filter(created_time__year=year).values(
+            'disease__disease_name').annotate(count=Count('disease')).order_by('-count')
+        years = User_Disease_report.objects.values_list('created_time__year', flat=True)
+        years = set(years)
+        x_axis = []
+        y_axis = []
+
+        for record in all_report_records:
+            x_axis.append(record['disease__disease_name'])
+            y_axis.append(record['count'])
+
+        data_pie = {'diseases': x_axis[:5], 'total_case': y_axis[:5]}
+        data_bar = {'diseases': x_axis, 'total_case': y_axis}
+        return render(request, 'report.html', {'records': all_report_records, 'data_pie': json.dumps(data_pie),
+                                               'data_bar': json.dumps(data_bar), 'years': years,'year':year})
+
+def be_report(request):
+    if request.method == 'POST':
+        disease = request.POST.get('approve_result')
+        disease =  get_object_or_404(Diseases_For_Ai, disease_name=disease)
+        User_Disease_report.objects.create(user=request.user,disease=disease)
+        return redirect('show_report')

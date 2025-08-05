@@ -7,16 +7,17 @@
     {% tailwind_css %}
     
 </head>
-<body class="bg-black text-white">
-  <div class="flex justify-start">
-        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">‌ရောဂါရှာဖွေခြင်းနှင့် ရင်ဆိုင်ကြမယ် နာတာရှည်ရောဂါ</h1>
-        <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
+<body class="bg-[#8cd98c] text-white font">
+  <div class="flex justify-start mt-[10px]">
+        <h1 class="text-[#0066cc] w-[30%] pl-[50px] text-[20px] text-right">‌ရောဂါရှာဖွေခြင်းနှင့် ရင်ဆိုင်ကြမယ် နာတာရှည်ရောဂါ</h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-black text-[15px] pt-[5px]">
             <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
             <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
             <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'show_report' %}">ရောဂါဖြစ်ပွားမှုတင်ပြချက်</a></div>
             {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">Admin</a></div>
                 {% else%}
                     <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{%url 'my_account' %}">{{request.user.username}}</a></div>
                 {% endif %}
@@ -29,12 +30,11 @@
         </div>
     </div>
   <div class="font-mono mt-[50px] w-[90%] h-auto pr-[10px] pl-[50px]">
-      <p class="text-[40px] font-extralight tracking-tighter">နေမကောင်းဘူးလားဗျာ. . .ဒါဆို သင် ခံစားနေရတဲ့ လက္ခဏာတွေကိုပြောပြပါ။ သင်ဖြစ်နေတဲ့ ရောဂါကို ပြောပြမယ်၊ ရှင်းပြပါ့မယ်။</p>
-      <p class="text-[25px] text-stone-400 my-[20px]">နေ့စဉ် နေထိုင်၊စာသောက်‌နေမှု မမှန်ကန်လို့ လူတချို့ နာတာရှည်ရောဂါဖြစ်ရတယ်။ သင့်ရဲ့ နေ့စဉ်နေထိုင်ပုံကကော ဘယ်လောက်တောင် နာတာရှည်ရောဂါကို ကာကွယ်နိုင်နေလဲ (သို့) အန်တုနိုင်နေလဲပေါ့. . .</p>
-      <a href={% url 'diagnosis' %}><button class="my-[20px] w-[300px] h-[50px] rounded-[10px] border-2 border-white bg-gradient-to-b from-[#5900b3] to-[#0059b3]">ရောဂါရှာဖွေခြင်း</button></a>
-      <a href={% url 'epidemic_intro' %}><button class="my-[20px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</button></a>
-      <a href={% url 'article_intro' %}><button class="my-[20px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white">ဆောင်းပါးများ</button></a>
+      <p class="text-[40px] font-extralight tracking-tighter text-black">နေမကောင်းဘူးလားဗျာ. . .ဒါဆို သင် ခံစားနေရတဲ့ လက္ခဏာတွေကိုပြောပြပါ။ သင်ဖြစ်နေတဲ့ ရောဂါကို ပြောပြမယ်၊ ရှင်းပြပါ့မယ်။</p>
+      <p class="text-[25px] text-stone-700 my-[40px]">နေ့စဉ် နေထိုင်၊စာသောက်‌နေမှု မမှန်ကန်လို့ လူတချို့ နာတာရှည်ရောဂါဖြစ်ရတယ်။ သင့်ရဲ့ နေ့စဉ်နေထိုင်ပုံကကော ဘယ်လောက်တောင် နာတာရှည်ရောဂါကို ကာကွယ်နိုင်နေလဲ (သို့) အန်တုနိုင်နေလဲပေါ့. . .</p>
+      <a href={% url 'diagnosis' %}><button class="my-[40px] w-[300px] h-[50px] rounded-[10px] border-2 border-white bg-gradient-to-b from-[#5900b3] to-[#0059b3]">ရောဂါရှာဖွေခြင်း</button></a>
+      <a href={% url 'epidemic_intro' %}><button class="my-[40px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white bg-gradient-to-b from-[#5900b3] to-[#0059b3]">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</button></a>
+      <a href={% url 'article_intro' %}><button class="my-[40px] w-[200px] h-[50px] rounded-[10px] border-[1px] border-white bg-gradient-to-b from-[#5900b3] to-[#0059b3]">ဆောင်းပါးများ</button></a>
   </div>
-
 </body>
 </html>

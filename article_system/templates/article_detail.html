@@ -7,15 +7,16 @@
     {% tailwind_css %}
 </head>
 <body class="bg-[#8cd98c] font-mono h-auto  leading-8">
-    <div class="flex justify-start">
-        <h1 class="text-[#0A400C] w-[30%] pl-[50px] text-[30px] text-right  my-[10px]">ဆောင်းပါးဖတ်မယ်</h1>
-        <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[5px]">
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
+    <div class="flex justify-start py-[20px]">
+        <h1 class="text-[#0A400C] w-[30%] pl-[50px] text-[30px] text-right  my-[10px] "><b>ဆောင်းပါးဖတ်မယ်</b></h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-[#0066cc] text-[15px] pt-[10px]">
+            <div><a class=" border-b-[1px] border-white rounded-[1px]  shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] p-[5px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]  shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] p-[5px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]  shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] p-[5px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]  shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] p-[5px]" href="{% url 'show_report' %}">ရောဂါဖြစ်ပွားမှုတင်ပြချက်</a></div>
             {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'admin:index' %}">{{request.user.username}}</a></div>
+                    <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'admin:index' %}">Admin</a></div>
                 {% else%}
                     <div><a class="bg-white  border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account'%}">{{request.user.username}}</a></div>
                 {% endif %}
@@ -28,23 +29,23 @@
         </div>
     </div>
     <hr class="border-1 border-black mt-[5px] mb-[10px]">
-    <div class="w-full text-center"><h1 class="text-[25px] pb-[10px]">{{article_record.caption}}</h1></div>
+    <div class="w-full text-center"><h1 class="text-[25px] pb-[10px] my-[15px]">{{article_record.caption}}</h1></div>
     <div class="w-[80%] mx-auto  flex justify-evenly">
         <div class="w-[30%]">
             {% if article_record.photo%}
-                <img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px]">
+                <img src="{{ article_record.photo.url }}" class="w-[300px] h-[300px] rounded-[20px] mb-[10px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">
             {% endif %}
             {% if request.user.is_authenticated%}
                 <form>{%csrf_token%}<input type="text" id="comment_input_box" placeholder="မေးမယ်၊ ပြောမယ်" class="w-[200px] rounded-[20px]" ><button id="sent_comment_btn" onclick='sent_comment(event)'>&nbsp;ရေးမယ်</button></form></div>
             {% else %}
-                <a href="{% url 'login' %}"><input type="text" id="comment_input_box" placeholder="မေးမယ်၊ ပြောမယ်" class="w-[200px] rounded-[20px]" ><button>&nbsp;ရေးမယ်</button></a></div>
+                <a href="{% url 'login' %}"><input type="text" id="comment_input_box" placeholder="မေးမယ်၊ ပြောမယ်" class="w-[200px] rounded-[20px]" ><button class="ml-[3px] border-[1px] border-black rounded-[10px] px-[1px] ">ပို့မယ်</button></a></div>
             {% endif %}
         <div class="w-[70%]"><p class="text-justify px-[20px] mb-[30px]">{{article_record.topic|safe}}</p>
             <div class="w-auto  h-[100px] mx-[20px] py-[10px]">
-                <button id="comment_btn"  type='button' onclick="show_comment()" class="rounded-[5px] border-2 border-black p-[5px]">မှတ်ချက်ပြ</button><span class="ml-[10px]">ရေးသူ:{{article_record.creator}}</span>
+                <button id="comment_btn"  type='button' onclick="show_comment()" class="rounded-[5px] p-[5px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">မှတ်ချက်ပြ</button><span class="ml-[10px]">ရေးသူ:{{article_record.creator}}</span>
                 {% if request.user.is_authenticated and request.user == article_record.creator %}
-                    <a href="{% url 'update_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px] ml-[10px]">ဆောင်းပါးပြင်မယ်</button></a>
-                    <a href="{% url 'delete_article' article_record.pk %}"><button class="rounded-[5px] border-2 border-black p-[5px]">ဆောင်းပါးဖျက်မယ်</button></a>
+                    <a href="{% url 'update_article' article_record.pk %}"><button class="rounded-[5px] p-[5px] ml-[10px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">ဆောင်းပါးပြင်မယ်</button></a>
+                    <a href="{% url 'delete_article' article_record.pk %}"><button class="rounded-[5px] p-[5px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]">ဆောင်းပါးဖျက်မယ်</button></a>
                 {% endif %}
                 <form method='post'>{%csrf_token%}<p id="comments" class="my-[10px] hidden"></p></form>
             </div>
@@ -81,7 +82,7 @@
                 let answer_box = document.createElement('input');
                 answer_box.id = `${comment.comment_pk}_answer_box`;
                 answer_box.placeholder = "ပြန်စာရေးမယ်";
-                answer_box.className = "rounded-[20px] h-[40px] w-[200px]";
+                answer_box.className = "rounded-[20px] h-[40px] w-[200px] mb-[10px]";
 
                 let answer_submit = document.createElement('button');
                 answer_submit.type = 'submit';
@@ -110,14 +111,14 @@
                 replies.id = `${comment.comment_pk}_replies`;
                 replies.textContent = `${comment.replies.length} ပြန်စာပြ`;
                 replies.onclick = () => {additional_box.style.display='block'}
-                replies.className = "ml-[150px] my-[10px] text-blue-500 border-[1px] border-black rounded-[10px]";
+                replies.className = "ml-[150px] my-[10px] text-blue-500 border-[1px] border-black rounded-[10px] p-[5px]";
 
                 let control_additional_Box = document.createElement('button');
                 control_additional_Box.type = 'button';
                 control_additional_Box.textContent = "ပြန်စာပိတ်";
                 control_additional_Box.id = `${comment.comment_pk}_control_additional_Box`;
                 control_additional_Box.onclick = () => {additional_box.style.display='none'};
-                control_additional_Box.className = "mx-[10px] my-[10px] text-red-500 border-[1px] border-black rounded-[5px]";
+                control_additional_Box.className = "mx-[10px] my-[10px] text-red-500 border-[1px] border-black rounded-[5px]  p-[5px]";
                 if ('{{request.user.is_authenticated}}' == 'True'){
                 additional_box.append(answer_box);
                 additional_box.append(answer_submit);}

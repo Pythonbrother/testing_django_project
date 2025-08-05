@@ -1,19 +1,44 @@
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Update Article</title>
+    {% tailwind_css %}
 </head>
-<body>
-{% if request.user.is_authenticated and request.user == object.creator %}
-    <form method="post">{% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">ပြင်မည်</button>
-    </form>
+<body  class="bg-[#8cd98c]">
+
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-8">
+
+    <!-- Account Header -->
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">
+        ဆောင်းပါးပြင်မယ်
+    </h1>
+
+    <div class="space-y-4">
+        {% if request.user.is_authenticated and request.user == object.creator %}
+        <form method="post" action="{% url 'update_article' object.pk %}" enctype="multipart/form-data">{% csrf_token %}
+            <div><div class="my-[10px]"><label for="name">ဆောင်းပါးနာမည်:</label></div>
+            {{form.name}}</div>
+
+            <div><div class="my-[10px]"><label for="caption">ဆောင်းပါးအညွှန်းစာ:</label></div>
+            {{form.caption}}</div>
+
+            <div><div class="my-[10px]"><label for="topic">အကြောင်းအရာ:</label></div>
+            {{form.topic}}</div>
+
+            <div><div class="my-[10px]"><label for="photo">ဓာတ်ပုံ:</label></div>
+            {{form.photo}}</div>
+
+            <div><button type="submit" class="border-[1px] border-black my-[10px] p-[5px] rounded-[5px]">ပြင်မယ်</button></div>
+
+        </form>
 {% else %}
     <h1>You are NOT RIGHT PERSON!</h1>
 {% endif %}
+    </div>
 
-
+</div>
 </body>
 </html>
+<div>

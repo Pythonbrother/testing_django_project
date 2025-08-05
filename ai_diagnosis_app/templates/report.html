@@ -1,0 +1,89 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {%tailwind_css%}
+</head>
+<body class="px-[10px]">
+<div class="text-center text-[30px]"><h2 class="mt-[20px]">{{year}} ခုနှစ် ရောဂါ အစီရင်ခံစာ</h2></div>
+<form method="post" action="{% url 'show_report' %}" class="w-full ">{%csrf_token%}
+    <input type="text" name='year' placeholder="ခုနှစ်များ"  list=years class="rounded-[10px] ">
+    <datalist id=years>
+        {% for year in years%}
+            <option value={{year}}>{{year}}</option>
+        {%endfor%}
+    </datalist>
+    <button>ကြည့်မယ်</button>
+</form>
+<div class="flex flex-justify space-x-[50px]">
+    <div><canvas id="myChart" class="w-[400px] h-[400px] pt-[20px]"></canvas><div class="text-center">အဖြစ်အများဆုံး ရောဂါ ၅မျိုး</div></div>
+    <div><canvas id="myChart2" class="w-[800px] h-[1500px] pt-[50px]"></canvas><div class="text-center">ရောဂါစုံဖော်ပြချက်</div></div>
+</div>
+
+    <script>
+        const my_pie = document.getElementById('myChart').getContext('2d');
+        const my_bar = document.getElementById('myChart2').getContext('2d');
+        const data_pie = JSON.parse('{{data_pie|safe}}');
+        const data_bar = JSON.parse('{{data_bar|safe}}');
+        const myChart = new Chart(my_pie, {
+            type: 'pie', // You can change to 'line', 'pie', etc.
+            data: {
+                labels: data_pie.diseases,
+                datasets: [{
+                    label: 'ရောဂါတွေ့ရှိမှု',
+                    data: data_pie.total_case,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',   // Red
+                        'rgba(54, 162, 235, 0.5)',   // Blue
+                        'rgba(255, 206, 86, 0.5)',   // Yellow
+                        'rgba(75, 192, 192, 0.5)',   // Green
+                        'rgba(153, 102, 255, 0.5)'   // Purple (new 5th color)
+                    ],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+
+                }
+            }
+        });
+        const myChart_2 = new Chart(my_bar, {
+            type: 'bar', // You can change to 'line', 'pie', etc.
+            data: {
+                labels: data_bar.diseases,
+                datasets: [{
+                    label: 'ရောဂါတွေ့ရှိမှု',
+                    data: data_bar.total_case,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',   // Red
+                        'rgba(54, 162, 235, 0.5)',   // Blue
+                        'rgba(255, 206, 86, 0.5)',   // Yellow
+                        'rgba(75, 192, 192, 0.5)',   // Green
+                        'rgba(153, 102, 255, 0.5)'   // Purple (new 5th color)
+                    ],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks:{stepSize:1},
+                    title: { display: true, text: '၁နှစ်အတွင်းရောဂါတွေ့ရှိမှုများ' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

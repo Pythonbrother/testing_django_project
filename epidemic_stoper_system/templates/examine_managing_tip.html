@@ -12,7 +12,7 @@
 <div class="bg-[#8cd98c] place-items-center">
 
         
-        <div>
+        <div class="bg-[#8cd98c] rounded-xl shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] my-[20px] p-[20px]">
             <form method="post" >{% csrf_token %}
                 {%for tip in tips%}
                     <input type="checkbox" value="{{tip}}" name="managing_tips" class="w-[30px] h-[30px] my-[3px] mx-[10px]  rounded-xl bg-[#8cd98c] shadow-[inset_2px_2px_2px_#133913,inset_-2px_-2px_3px_#ecf9ec]"><p class="font-mono font-extrabold inline-block pl-[10px]">{{tip}}</p><br>

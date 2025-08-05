@@ -9,7 +9,7 @@
 <body class="bg-[#8cd98c] font-mono font-extrabold ">
     <div class="bg-[#8cd98c] rounded-xl shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] inline-block text-[30px] m-[5px]"><a href="javascript:history.back()">🛡</a>️</div><h1 class="inline-block my-[10px] ml-[10px] underline font-serif">{{epidemic.name}} ကာကွယ်ရန် လိုက်နာဖို့ {{total_tip}} ချက်</h1>
     <div class="bg-[#8cd98c] place-items-center">
-    <div>
+    <div class="bg-[#8cd98c] rounded-xl shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec] my-[20px] p-[20px]">
         <form method="post" >{% csrf_token %}
 
             {%for tip in food_avoid_list%}

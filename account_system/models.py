@@ -31,7 +31,7 @@ class User_Account(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     #country = models.CharField(max_length=30)
-    gender = models.CharField(max_length=9)
+    gender = models.CharField(max_length=9, choices={'ယောက်ျား': 'ယောက်ျား', 'မိန်းမ': 'မိန်းမ'})
     DOB = models.DateField(null=True,blank=True)
 
     objects = User_Manager()

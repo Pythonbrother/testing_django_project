@@ -5,59 +5,64 @@
   <meta charset="UTF-8">
   <title>Title</title>
     {% tailwind_css %}
+
 </head>
-<body>
-<div class="flex justify-evenly bg-[#141f1f] w-full h-screen overflow-auto">
-    <div class="bg-[#141f1f] w-[35%] h-[100%] py-[10px] px-[5px]">
+<body class="">
+<div class="flex justify-evenly bg-blue-600 w-full h-screen overflow-auto " style="scrollbar-width:none;">
+    <div class=" bg-blue-600 w-[35%] h-[100%] py-[10px] px-[5px]">
 
         <form onsubmit="event.preventDefault(); send_symptoms();" method="post">{% csrf_token %}
-            <a href="javascript:history.back()"><button type="button" class="bg-white w-[10%] h-[50px] rounded-[5px]">နောက်</button></a>
-            <input type="text" id="symptom_box" list='symptoms_list' class="w-[70%] h-[50px] text-[20px] font-mono font-extrabold rounded-[5px]" autocomplete="off">
+            <a href="javascript:history.back()"><button type="button" class=" w-[10%] h-[50px] rounded-[5px] bg-[#8cd98c] text-black border-2 border-white ">နောက်</button></a>
+            <input type="text" id="symptom_box" list='symptoms_list' class="w-[70%] h-[50px] text-[20px] font-mono rounded-[5px]" autocomplete="off">
             <datalist id='symptoms_list'>
                 {% for symptom in symptoms_list%}
                 <option value="{{symptom}}">{{symptom}}</option>
                 {% endfor %}
             </datalist>
-            <button type="submit" class="w-[10%] h-[50px] bg-white rounded-[5px] text-[20px] font-mono font-extrabold"> ပြော</button>
+            <button type="submit" class="w-[10%] h-[50px] bg-[#8cd98c] text-black border-2 border-white rounded-[5px] text-[20px] font-mono"> ပြော</button>
 
-        <form>
-        <div class=" bg-[#141f1f] my-[20px] rounded-[5px] text-white font-mono ">
+        </form>
+        <div class=" bg-blue-600 my-[20px] rounded-[5px] text-white font-mono ">
             <div class="flex justify-center w-[100%] h-[100%]">
                 <button id="note-btn" type='reset' onclick='add()' class=" bg-[#141f1f] rounded-[5px] text-green-400  border-2 p-[5px] ">စာရေးမှတ်</button>
                 <button id="note-btn" type='button' onclick='edit()' class=" bg-[#141f1f] rounded-[5px] text-yellow-400 border-2 p-[5px] ml-[10px]">စာပြန်ပြင်</button>
 
             </div>
             <div class="p-[10px] w-[100%] h-[100%] text-center"> 
-                <h3 id="note_header">စာရွက်:</h3>
-                <p id="note" class="text-green-400 border-2 text-left rounded-[5px]" ></p>
+                <div class="mb-[10px]"><h3 id="note_header" class=" text-white">စာရွက်:</h3></div>
+                <p id="note" class="text-white  text-left rounded-[5px] p-[10px]" ></p>
             </div>
-            <div class="p-[10px] w-[100%] h-[100%] text-center"> 
-                <h3 id="about_disease_header" class="hidden">ရောဂါအကြောင်း:</h3>
-                <p id="about_disease" class="text-green-400 border-2 text-left hidden rounded-[5px]" ></p>
+            <div class=" w-[100%] h-auto text-center">
+                <div class="mb-[10px]"><h3 id="about_disease_header" class="hidden text-white">ရောဂါအကြောင်း:</h3></div>
+                <p id="about_disease" class="h-[370px] overflow-auto text-white  text-left hidden rounded-[5px] p-[5px] leading-8" style="scrollbar-width: none;" ></p>
             </div>
         </div>
     </div>
-    <div class="bg-gradient-to-l from-white to-[#8cd98c] w-[65%] h-[100%] rounded-l-[120px] font-mono">
+    <div class="bg-[#8cd98c] w-[65%] h-[100%] rounded-l-[120px] font-mono pb-[10px] overflow-auto" style="scrollbar-width: none;" >
         <div class="place-items-center">
-            <p class="text-blue-800 my-[20px] px-[30px] text-[30px] rounded-[5px] ">
-               ကျွမ်းကျင်ဆရာဝန်တုပ ဉာဏ်ရည်တု ကျွမ်းကျင်ဆရာဝန်များ:
+            <p class="text-black my-[20px] px-[30px] text-[30px] rounded-[5px] ">
+               ရောဂါရှာဖွေရေး ဆရာဝန်များ
             </p>
         </div>
         <div class="place-items-center">
-            <p id='you_have' class=" w-[90%] my-[10px] px-[30px] text-[15px]  rounded-[5px] text-black font-extrabold">
+            <p id='you_have' class="text-black w-full min-h-[60px] my-[15px] text-center px-[30px] text-[18px]  rounded-[5px] ">
                
             </p>
         </div>
         <div class="flex justify-evenly">
-            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
-                <img src="{% static 'images/doctor4.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
-                <p class="text-[black] text-[15px]">အထူးဆရာဝန်</p>
-                <p id="doctor1_result" class="text-black"></p>
+            <div class="w-[30%] text-center text-white">
+                <img src="{% static 'images/old_doctor.png' %}" class="rounded-full my-[10px] w-[300px] h-[200px] shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]" ></img>
+                <p class="text-blue-600 text-[20px]">အထူးဆရာဝန်</p>
+                <p id="doctor1_result" class="w-full text-black pt-[15px]  text-[23px]">
+                    <div id="loading_1" class="mt-[10px] border-4 border-blue-400 border-t-transparent mx-auto w-10 h-10 rounded-full animate-spin hidden"></div>
+                </p>
             </div>
-            <div class="w-[30%] text-center text-white text-[20px] font-extrabold">
-                <img src="{% static 'images/doctor2.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
-                <p class="text-black text-[15px]">အကူဆရာဝန်</p>
-                <p id="doctor2_result" class="text-black"></p>
+            <div class="w-[30%] text-center text-white">
+                <img src="{% static 'images/young_doctor.png' %}" class="rounded-full my-[10px] w-[300px] h-[200px]  shadow-[_2px_2px_5px_#133913,_-2px_-2px_5px_#ecf9ec]"></img>
+                <p class="text-blue-600 text-[20px]">အကူဆရာဝန်</p>
+                <p id="doctor2_result" class="text-black pt-[15px] text-[23px]">
+                    <div  id="loading_2" class="mt-[10px] border-4 border-blue-400 border-t-transparent mx-auto w-10 h-10 rounded-full animate-spin hidden"></div>
+                </p>
             </div>
             <!--div class="w-[30%] text-center text-white text-[20px] font-extrabold">
                 <img src="{% static 'images/doctor3.jpg' %}" class="rounded-[10px] my-[10px] w-[300px] h-[200px]"></img>
@@ -66,10 +71,22 @@
             </div-->
         </div>
 
+        {% if request.user.is_authenticated %}
+        <div id="approve" class="max-w-[75%] text-[10px] mx-auto p-[5px] mt-[8px] leading-8 hidden text-center border-2 rounded-[30px]">
+            <form  method="post" action="{% url 'be_report'%}">{% csrf_token %}
+                <p id="approve_text">! ရောဂါဖြစ်ပွားမှုမှတ်တမ်းတွင် ပါဝင်ကူညီရန် ရောဂါအဖြေပေါ် ၁ချက်နိုပ်၍ ပါဝင်ပေးပါ။</p>
+                <input type="radio" name="approve_result" id="approve_btn1"><label id="approve_label1"></label>
+                <input type="radio" name="approve_result" id="approve_btn2"><label id="approve_label2"></label>
+                <button type='submit' class="">ပါဝင်ကူညီမည်</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
     <script>
         let all_results = "";
         function add(){
+        if(document.getElementById('symptom_box').value != ''){
+            document.getElementById('note').style.display = 'block';
             symptoms = document.getElementById('symptom_box').value;
             document.getElementById('about_disease').style.display = 'none';
             document.getElementById('about_disease_header').style.display = 'none';
@@ -84,7 +101,8 @@
                     document.getElementById('note').textContent += `${symptoms}`
                 }
             };
-            document.getElementById('symptom_box').value = ''
+            document.getElementById('symptom_box').value = '';
+        }
         };
         function edit(){
             if(document.getElementById('note').textContent != ''){
@@ -96,6 +114,11 @@
             
         }
         function send_symptoms(){
+        if(document.getElementById('note').textContent != '' || document.getElementById('symptom_box').value != ''){
+            document.getElementById('doctor1_result').style.display='none';
+            document.getElementById('doctor2_result').style.display='none';
+            document.getElementById('loading_1').style.display='block';
+            document.getElementById('loading_2').style.display='block';
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             add();
             let note = document.getElementById('note').textContent;
@@ -110,13 +133,26 @@
                 }).then(response => response.json()).then(data => {
                     all_results=data.all_results;
                     document.getElementById('about_disease').innerHTML = all_results.topic1;
-                    document.getElementById('you_have').textContent = `သင့်ရဲ့ လက္ခဏာများက တော့ ${data.response_symptoms} ဖြစ်ပါတယ်။`;
+                    document.getElementById('loading_1').style.display='none';
+                    document.getElementById('loading_2').style.display='none';
+                    document.getElementById('doctor1_result').style.display='block';
+                    document.getElementById('doctor2_result').style.display='block';
+                    document.getElementById('you_have').innerHTML = `သင့်ရဲ့ လက္ခဏာများ ${data.response_symptoms}`;
                     document.getElementById('doctor1_result').textContent = `${data.all_results.result1}`;
                     document.getElementById('doctor2_result').textContent = `${data.all_results.result2}`;
                     document.getElementById('doctor1_result').addEventListener('click',()=>{
                         document.getElementById('about_disease').innerHTML = all_results.topic1;})
                     document.getElementById('doctor2_result').addEventListener('click',()=>{
                         document.getElementById('about_disease').innerHTML = all_results.topic2;})
+                    if ( '{{request.user.is_authenticated}}' == 'True'){
+                    document.getElementById('approve').style.display = 'block';
+                    document.getElementById('approve_label1').textContent = data.all_results.result1;
+                    document.getElementById('approve_label2').textContent = data.all_results.result2;
+                    document.getElementById('approve_btn1').value = data.all_results.result1;
+                    document.getElementById('approve_btn2').value = data.all_results.result2;
+                    }
+
+
                 });
             document.getElementById('symptom_box').value = '';
             document.getElementById('note').textContent = '';
@@ -125,6 +161,7 @@
             document.getElementById('about_disease_header').style.display = 'block';
             document.getElementById('about_disease').style.display = 'block';
             };
+        }
     </script>
     
     <!--

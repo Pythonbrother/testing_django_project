@@ -80,17 +80,26 @@ def examine_prevention_tip(request, epidemic_id):
         checked_lifestyle_take_list = request.POST.getlist("lifestyle_take")
         lifestyle_take_marks = (len(checked_lifestyle_take_list)*(1.1))+((len(lifestyle_take_list)-len(checked_lifestyle_take_list))*(-1.1))
         total_marks_got = food_avoid_marks + food_take_marks + lifestyle_avoid_marks + lifestyle_take_marks # this result can be negative or positive,
-        
-        years_per_mark = (1/given_total_marks)*FULL_MARKS_YEARS
+
+
+        years_per_mark = (1/given_total_marks)*10
         total_years_got_by_mark = total_marks_got * years_per_mark # this result can be negative or positive, later reduce this in 'get_year_by_follow_score_percent'
-        
+
+        print(f"given_total_marks: {given_total_marks}")
+        print(f"total_marks_got: {total_marks_got}")
+        print(f"years_per_mark: {years_per_mark}")
+        print(f"total_years_got_by_mark: {total_years_got_by_mark}")
+        print("************************************")
+
         checked_compound_all_tips = checked_food_avoid_list + checked_food_take_list + checked_lifestyle_avoid_list + checked_lifestyle_take_list
         total_checked_tips = len(checked_compound_all_tips)
 
-        able_follow_score_percent = round((total_checked_tips/total_tips)*100,2)
-        get_year_by_follow_score_percent = round((able_follow_score_percent/100)*FULL_MARKS_YEARS)
-        
-        result_year = round(get_year_by_follow_score_percent + (total_years_got_by_mark) )
+        able_follow_score_percent = round((total_checked_tips/total_tips)*100,1)
+        get_year_by_follow_score_percent = round((able_follow_score_percent/100)*FULL_MARKS_YEARS,1)
+
+        print(f"get_year_by_follow_score_percent: {get_year_by_follow_score_percent}")
+
+        result_year = round(get_year_by_follow_score_percent + (total_years_got_by_mark),1 )
         
         all_you_followed = checked_food_avoid_list + checked_food_take_list + checked_lifestyle_avoid_list + checked_lifestyle_take_list
         all_you_dont_followed = compound_all_tips
@@ -99,7 +108,7 @@ def examine_prevention_tip(request, epidemic_id):
 
         if result_year<2:
             if get_year_by_follow_score_percent <= 0:
-                get_year_by_follow_score_percent = 1
+                get_year_by_follow_score_percent = 5
             #message_to_user = f"RED! you can't follow well, you can get disease in {get_year_by_follow_score_percent} years."
             message_to_user = f"‌အခုဖြေဆိုချက်အရ သင့်ကျန်းမာရေးအတွက် နေထိုင်မှုပုံစံ မကောင်းပါ။ ဒီလို အလေ့အကျင့်ကြောင့် ရောဂါက အခုမှစလို့ {get_year_by_follow_score_percent} နှစ် အတွင်း ဝင်လာနိုင်ပါတယ်။"
             return render(request,'prevention_result.html', {"message_to_user": message_to_user,"all_you_followed":all_you_followed,"all_you_dont_followed":all_you_dont_followed,'color':'#ff4d4d'})
@@ -150,44 +159,12 @@ def my_account(request):
             return redirect('login')
 
 
-def test(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-
-    full_comments = Comment_to_Article.objects.filter(article=article).select_related('commenter').order_by('-created_time')
-    comment_data = [{
-        'comment_pk': comment.pk,
-        'commenter': comment.commenter.username,
-        'comment': comment.comment,
-        'replies': [{'comment':replie.comment,'commenter':replie.commenter.username} for replie in Comment_to_Comment.objects.filter(
-            target_comment=comment.pk)],
-        'upload_at': comment.created_time.strftime("%Y-%m-%d"),
-    } for comment in full_comments]
-
+def test(request):
     if request.method == 'GET':
-        return render(request, 'test.html', {'article_record': article,'comment_data':json.dumps(comment_data)})
-    else:
-        comment = request.POST.get("comment")
-        if comment:
-            Comment_to_Article.objects.create(comment=comment, article=article, commenter=request.user)
-            full_comments = Comment_to_Article.objects.filter(article=article).select_related('commenter').order_by('-created_time')
-            comment_data = [{
-                'comment_pk':comment.pk,
-                'commenter':comment.commenter.username,
-                'comment':comment.comment,
-                'replies':[{'comment':replie.comment,'commenter':replie.commenter.username} for replie in Comment_to_Comment.objects.filter(target_comment=comment.pk)],
-                'upload_at':comment.created_time.strftime("%Y-%m-%d"),
-            } for comment in full_comments]
-            return JsonResponse({'comment_data': comment_data})
-        replies_comment = request.POST.get("replies_comment")
-        to_comment_pk = request.POST.get("to_comment_pk")
-        target_comment = get_object_or_404(Comment_to_Article,pk=to_comment_pk)
-        if replies_comment:
-            Comment_to_Comment.objects.create(comment=replies_comment,target_comment=target_comment,commenter=request.user)
-            comment_data = [{
-                'comment_pk': comment.pk,
-                'commenter': comment.commenter.username,
-                'comment': comment.comment,
-                'replies': [{'comment':replie.comment,'commenter':replie.commenter.username} for replie in Comment_to_Comment.objects.filter(target_comment=comment.pk)],
-                'upload_at': comment.created_time.strftime("%Y-%m-%d"),
-            } for comment in full_comments]
-            return JsonResponse({'comment_data':comment_data})
+        my_list = [40,41]
+        my_article = get_object_or_404(Article, pk = 13)
+        records = Comment_to_Article.objects.filter(pk__in=my_list)
+        for record in records:
+            record.article = my_article
+            record.save()
+        return HttpResponse('HELLO')

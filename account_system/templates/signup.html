@@ -6,7 +6,7 @@
     <title>Signup</title>
     {% tailwind_css %}
 </head>
-<body>
+<body  class="bg-[#8cd98c]">
 
 
 <div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-8">
@@ -18,18 +18,20 @@
 
     <div class="space-y-4">
         <form method="post" autocomplete="off">{% csrf_token %}
-            <div><label for="username">နာမည်:</label><br>
-            <input type="text" name="username" id="username" autocomplete="new-user"></div>
-            <div><label for="email">အီးမေးလ်:</label><br>
+            <div><label for="username">နာမည် :</label><br>
+            <input type="text" name="username" id="username" autocomplete="off"></div>
+            <div><label for="email">အီးမေးလ် :</label><br>
             <input type="email" name="email" id="email" autocomplete="off"></div>
-            <div><label for="dob">မွေးနေ့:</label><br>
-            <input type="date" name="dob" id="dob" autocomplete="off"></div>
-            <div><label for="password1">စကားဝှက်:</label><br>
-            <input type="password" name="password1" id="password1" autocomplete="new-password"></div>
-            <div><label for="password1">အတည်ပြုစကားဝှက်:</label><br>
+            <div><label for="DOB">မွေးနေ့ :</label><br>
+            <input type="date" name="DOB" id="DOB" autocomplete="off"></div>
+            <div><label>လိင် :</label><br>
+            {{form.gender}}
+            <div><label for="password1">စကားဝှက် :</label><br>
+            <input type="password" name="password1" id="password1" autocomplete="off"></div>
+            <div><label for="password1">အတည်ပြုစကားဝှက် :</label><br>
             <input type="password" name="password2" id="password2" autocomplete="off"></div>
 
-            <div><button type="submit">ဖွင့်မည်</button></div>
+            <div><button type="submit" class="border-[1px] border-black my-[10px] p-[5px] rounded-[5px]">ဖွင့်မည်</button></div>
             {% if errors %}
                 {% for error in errors %}
                     <div style="color: red;">{{ error }}</div>

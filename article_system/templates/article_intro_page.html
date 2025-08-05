@@ -7,34 +7,34 @@
     {% tailwind_css %}
 </head>
 <body class="bg-[url('/static/images/leaf.jpg')] bg-cover bg-center bg-no-repeat">
-    <div class="flex justify-start">
-        <h1 class="text-[#ffff00] w-[30%] pl-[50px] text-[20px] text-right">ရောဂါရှာဖွေခြင်းနှင့် ‌ရင်ဆိုင်ကြမယ် နာတာရှည်ရောဂါ
-</h1>
-        <div class="flex justify-evenly w-[70%] h-auto text-white text-[15px] pt-[5px]">
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}">ရောဂါရှာဖွေခြင်း</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}">နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</a></div>
-            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}">ဆောင်းပါးများ</a></div>
+    <div class="flex justify-start py-[20px]">
+        <h1 class="text-[#ffeb99] w-[30%] pl-[50px] text-[25px] text-center"><b>ဆောင်းပါးများ</b></h1>
+        <div class="flex justify-evenly w-[70%] h-auto text-white text-[15px] pt-[10px]">
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'diagnosis' %}"><b>ရောဂါရှာဖွေခြင်း</b></a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'epidemic_intro' %}"><b>နေထိုင်ပုံနှင့်နာတာရှည်ရောဂါ</b></a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'article_intro' %}"><b>ဆောင်းပါးများ</b></a></div>
+            <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'show_report' %}"><b>ရောဂါဖြစ်ပွားမှုတင်ပြချက်</b></a></div>
             {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    <div><a class="border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">{{request.user.username}}</a></div>
+                    <div><a class="border-2 border-white rounded-[20px] p-[3px]" href="{%url 'admin:index' %}">Admin</a></div>
                 {% else%}
-                    <div><a class="text-black border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account' %}">{{request.user.username}}</a></div>
+                    <div><a class=" border-2 border-white rounded-[20px] p-[3px]" href="{% url 'my_account' %}">{{request.user.username}}</a></div>
                 {% endif %}
 
-                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit">အကောင့်ထွက်</button></form>
+                <form method="post" action="{% url 'logout'%}" >{%csrf_token%}<button type="submit"><b>အကောင့်ထွက်</b></button></form>
             {% else %}
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}">အကောင့်ဖွင့်</a></div>
-                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}">အကောင့်ဝင်</a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'signup' %}"><b>အကောင့်ဖွင့်</b></a></div>
+                <div><a class=" border-b-[1px] border-white rounded-[1px]" href="{% url 'login' %}"><b>အကောင့်ဝင်</b></a></div>
             {% endif %}
         </div>
     </div>
-    <div class="flex justify-around my-[10px] ">
-        <h1 class="w-[30%] text-center text-[#ffeb99]   font-mono font-extrabold text-[30px]">ဆောင်းပါးများ <a href="{% url 'create_article' %}">📝</a></h1>
-        <div class="w-[60%] h-[40px] "></div>
+    <div class="flex justify-around">
+
+        <div class="w-[60%] h-[20px] "></div>
     </div>
 
         <div class="flex justify-around">
-        <div class="backdrop-blur-[5px] w-[30%] h-auto border-[1px] border-black rounded-[15px] p-[10px] shadow-[_0px_0px_20px_black,_-0px_-0px_20px_black]">
+        <div class="backdrop-blur-[5px] w-[30%] h-[450px] overflow-auto border-[1px] border-black rounded-[15px] p-[10px] shadow-[_0px_0px_20px_black,_-0px_-0px_20px_black]"  style="scrollbar-width:none;">
             <form method="post">{% csrf_token%}
                 <input id='name_search' name='name_search' class="rounded-[30px]" list="name_list" type="text" placeholder="ရှာမယ်" autocomplete="off">
                 <datalist id="name_list">
@@ -42,10 +42,10 @@
                     <option value="{{record.name}}">{{record.caption}}</option>
                     {% endfor %}
                 </datalist>
-                <button class="h-[40px] bg-white rounded-[30px]" type="submit">🔍</button>
+                <button class="h-[40px] bg-white rounded-[30px] mr-[5px]" type="submit">🔍</button><a href="{% url 'create_article' %}" class="text-[25px]">📝</a>
             </form>
             <div class="text-white font-mono font-extralight p-[10px]">
-                <p class="text-justify">စာဖတ်ခြင်းနှင့် ကျန်းမာရေးနှင့်ပတ်သက်သော ဆောင်းပါးများကို ရေးသားခြင်းသည် စိတ်ရောကိုယ်ပါ ကျန်းမာစေရုံသာမက အသိပညာ၊ စိတ်ခံစားမှုနှင့် လူမှုဆက်ဆံရေးကိုပါ တိုးတက်စေပါသည်။ စာဖတ်ခြင်းနှင့် ကျန်းမာရေးဆိုင်ရာ ရေးသားခြင်းသည် မိမိကိုယ်ကိုယ် ဖွံ့ဖြိုးစေရုံသာမက အခြားသူများကိုပါ အကျိုးပြုနိုင်သော အလေ့အကျင့်ကောင်းတစ်ခုဖြစ်သည်။ ထို့ကြောင့် နေ့စဉ်အချိန်အနည်းငယ်ပေးကာ ကျန်းမာရေးဗဟုသုတများ ဖတ်ရှုခြင်း၊ မျှဝေခြင်းဖြင့် ပိုမိုကောင်းမွန်သော ဘဝနေထိုင်မှုကို တည်ဆောက်နိုင်ပါသည်။  ဤကဲ့သို့ အလေ့အကျင့်များ၏ အဓိက အကျိုးကျေးဇူးများမှာ –  
+                <p class="text-justify">စာဖတ်ခြင်းနှင့် ကျန်းမာရေးနှင့်ပတ်သက်သော ဆောင်းပါးများကို ရေးသားခြင်းသည် စိတ်ရောကိုယ်ပါ ကျန်းမာစေရုံသာမက အသိပညာ၊ စိတ်ခံစားမှုနှင့် လူမှုဆက်ဆံရေးကိုပါ တိုးတက်စေပါသည်။ စာဖတ်ခြင်းနှင့် ကျန်းမာရေးဆိုင်ရာ ရေးသားခြင်းသည် မိမိကိုယ်ကိုယ် ဖွံ့ဖြိုးစေရုံသာမက အခြားသူများကိုပါ အကျိုးပြုနိုင်သော အလေ့အကျင့်ကောင်းတစ်ခုဖြစ်သည်။ ထို့ကြောင့် နေ့စဉ်အချိန်အနည်းငယ်ပေးကာ ကျန်းမာရေးဗဟုသုတများ ဖတ်ရှုခြင်း၊ မျှဝေခြင်းဖြင့် ပိုမိုကောင်းမွန်သော ဘဝနေထိုင်မှုကို တည်ဆောက်နိုင်ပါသည်။  ဤကဲ့သို့ အလေ့အကျင့်များ၏ အဓိက အကျိုးကျေးဇူးများမှာ –
 
                     <br>၁။ ကျန်းမာရေးအသိပညာ တိုးပွားစေခြင်း<br>၂။ စိတ်ဖိစီးမှုလျော့ကျစေခြင်း<br>၃။ အာရုံစူးစိုက်မှုနှင့် မှတ်ဉာဏ်တိုးတက်စေခြင်း<br>၄။ ဆုံးဖြတ်ချက်များ ပိုမိုကောင်းမွန်စေခြင်း<br>၅။ လူမှုဆက်ဆံရေး တိုးတက်စေခြင်း<br>၆။ ကိုယ်ရေးကိုယ်တာ ကျန်းမာရေး စောင့်ရှောက်မှု တိုးတက်စေခြင်း<br>၇။ စာနာစိတ်နှင့် အတွေးအမြင်ကျယ်ပြန့်စေခြင်း<br>
                     
@@ -53,10 +53,10 @@
             </div>
 
         </div>
-        <div class="w-[60%] h-auto grid grid-cols-4  place-items-center gap-y-2 p-[20px]   ">
+        <div class="w-[60%] h-auto grid grid-cols-4  place-items-center gap-y-2 p-[10px]   ">
             {% for article in random_articles %}
                 <a href="{% url 'article_detail' article.pk%}">
-                    <div class="font-mono text-[20px] w-[150px] h-[150px] rounded-[15px] backdrop-blur-[5px] border-[1px] border-white text-[#ffeb99] text-center py-[20px] shadow-[_0px_0px_20px_black,_-0px_-0px_20px_black]">{{article.name}}</div>
+                    <div class="font-mono text-[18px] w-[120px] h-[120px] rounded-[15px] backdrop-blur-[5px] border-[1px] border-white text-[#ffeb99] text-center py-[20px] shadow-[_0px_0px_20px_black,_-0px_-0px_20px_black]">{{article.name}}</div>
                 </a>
             {% endfor %}
         </div>
